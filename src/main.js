@@ -37,8 +37,4 @@ app.on('activate', () => {
 
 ipcMain.on('storeAlarm', async (event, arg) => {
   await localStorage.setItem(arg.time, arg.bodyPart);
-  const saved = await localStorage.getItem(arg.time);
-
-  console.log(saved);
 });
-
