@@ -26,9 +26,11 @@
  * ```
  */
 
- import React from 'react';
- import ReactDOM from 'react-dom';
- console.log('Loaded React.');
- ReactDOM.render(<div>Test.</div>, document.getElementById('root'));
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import App from './components/App.jsx';
+console.log('Loaded React.');
+ReactDOM.render(<App />, document.getElementById('root'));
 
 console.log('👋 This message is being logged by "renderer.js", included via webpack');
