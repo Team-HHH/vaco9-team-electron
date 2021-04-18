@@ -1,5 +1,7 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
+
+const { localStorage } = require('electron-browser-storage');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -11,6 +13,10 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+    }
   });
 
   // and load the index.html of the app.
@@ -40,6 +46,13 @@ app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
+});
+
+ipcMain.on('storeAlarm', async (event, arg) => {
+  await localStorage.setItem(arg.time, arg.bodyPart);
+  const saved = await localStorage.getItem(arg.time);
+
+  console.log(saved);
 });
 
 // In this file you can include the rest of your app's specific main process
