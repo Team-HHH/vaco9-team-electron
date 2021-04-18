@@ -1,8 +1,6 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 
-const { localStorage } = require('electron-browser-storage');
-
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
@@ -36,5 +34,21 @@ app.on('activate', () => {
 });
 
 ipcMain.on('storeAlarm', async (event, arg) => {
-  await localStorage.setItem(arg.time, arg.bodyPart);
+  fs.readFile("./alarmData.json", 'utf8', async (err, data) => {
+    if (err) {
+      return;
+    }
+
+    const file = JSON.parse(data);
+
+    file.alarms.push({ "time": arg.time, "bodyPart": arg.bodyPart });
+
+    const json = JSON.stringify(file);
+
+    fs.writeFile("./alarmData.json", json, 'utf8', function (err) {
+      if (err) {
+        return;
+      }
+    });
+  });
 });
