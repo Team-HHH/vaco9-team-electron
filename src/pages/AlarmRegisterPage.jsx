@@ -7,8 +7,8 @@ import { ipcRenderer } from "electron";
 export default function AlarmRegisterPage() {
   const [alarms, setAlarms] = useState([]);
 
-  function handleDeleteButtonClick() {
-
+  function handleDeleteButtonClick(time) {
+    setAlarms(alarms.filter(alarm => alarm.time !== time));
   }
 
   function handleRegisterAlarmSubmit(event, time, bodyPart) {
