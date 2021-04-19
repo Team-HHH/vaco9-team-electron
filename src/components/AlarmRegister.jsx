@@ -47,6 +47,7 @@ export default function AlarmRegister({ onRegisterAlarmSubmit }) {
             type='time'
             name='time'
             onChange={(e) => { setTime(e.target.value) }}
+            required
           />
         </SelectorWrapper>
         <HorizontalLine />
@@ -54,8 +55,8 @@ export default function AlarmRegister({ onRegisterAlarmSubmit }) {
           <select
             name='bodyPart'
             onChange={(e) => { setBodyPart(e.target.value) }}
+            required
           >
-            <option value={''}>부위별 스트레칭</option>
             <option value={'wrist'}>손목</option>
             <option value={'back'}>등</option>
             <option value={'waist'}>허리</option>
