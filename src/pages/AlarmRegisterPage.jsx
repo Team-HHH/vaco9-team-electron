@@ -30,6 +30,8 @@ export default function AlarmRegisterPage() {
 
   function handleDeleteButtonClick(time) {
     setAlarms(alarms.filter(alarm => alarm.time !== time));
+
+    ipcRenderer.send('deleteAlarm', time);
   }
 
   function handleRegisterAlarmSubmit(event, time, bodyPart) {

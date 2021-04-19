@@ -1,6 +1,8 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
-const path = require('path');
-const fs = require('fs');
+const { app, BrowserWindow, ipcMain, Notification } = require('electron');
+const { parse, isFuture, differenceInMilliseconds } = require('date-fns');
+const { getVideos, getAds } = require('./apis');
+const VideoStore = require('./store/videos');
+const AlarmStore = require('./store/alarms');
 
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -13,14 +15,65 @@ const createWindow = () => {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-    }
+    },
   });
 
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
   mainWindow.webContents.openDevTools();
 };
 
-app.on('ready', createWindow);
+const stretchVideos = new VideoStore({
+  configName: 'stretchVideos',
+  defaults: {},
+});
+
+const alarms = new AlarmStore({
+  configName: 'alarms',
+  defaults: {
+    alarms: [],
+  },
+});
+
+(async function () {
+  const response = await getVideos();
+  const { videos } = response.data.data;
+
+  for (const video of videos) {
+    stretchVideos.set(video.bodyPart, video.urls);
+  }
+})();
+
+setInterval(async () => {
+  const currentAlarms = alarms.get();
+  const now = new Date();
+
+  for (const alarm of currentAlarms) {
+    const alarmTime = parse(alarm.time, 'HH:mm', new Date());
+    const diffMilliseconds = differenceInMilliseconds(alarmTime, now);
+
+    if (isFuture(alarmTime) && diffMilliseconds < 1000 * 60 * 10) {
+      const response =  await getAds();
+      const { _id, content } = response.data.data;
+
+      setTimeout(() => {
+        const options = {
+          title: '스트레칭 3분 전입니다.',
+          body: `이번엔 ${alarm.bodyPart} 스트레칭 시간입니다.`,
+        };
+
+        new Notification(options).show();
+      }, diffMilliseconds - 1000 * 60 * 3);
+
+      setTimeout(() => {
+        createWindow();
+      }, diffMilliseconds);
+    }
+  };
+}, 1000 * 60 * 10);
+
+app.on('ready', () => {
+  createWindow();
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -34,22 +87,16 @@ app.on('activate', () => {
   }
 });
 
-ipcMain.on('storeAlarm', async (event, arg) => {
-  fs.readFile("./alarmData.json", 'utf8', async (err, data) => {
-    if (err) {
-      return;
-    }
+ipcMain.on('storeAlarm', (event, arg) => {
+  alarms.set(arg.time, arg.bodyPart);
+});
 
-    const file = JSON.parse(data);
+ipcMain.on('requestAlarms', (event) => {
+  const currentAlarms = alarms.get();
 
-    file.alarms.push({ "time": arg.time, "bodyPart": arg.bodyPart });
+  event.sender.send('loadAlarms', currentAlarms);
+});
 
-    const json = JSON.stringify(file);
-
-    fs.writeFile("./alarmData.json", json, 'utf8', function (err) {
-      if (err) {
-        return;
-      }
-    });
-  });
+ipcMain.on('deleteAlarm', (event, arg) => {
+  alarms.delete(arg);
 });
