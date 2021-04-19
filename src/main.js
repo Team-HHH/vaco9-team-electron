@@ -43,7 +43,7 @@ const alarms = new AlarmStore({
   }
 })();
 
-setTimeout(() => {
+setInterval(() => {
   const currentAlarms = alarms.get();
   const now = new Date();
 
@@ -52,12 +52,22 @@ setTimeout(() => {
     const diffMilliseconds = differenceInMilliseconds(alarmTime, now);
 
     if (isFuture(alarmTime) && diffMilliseconds < 1000 * 60 * 10) {
+      console.log('타임아웃 설정됨.')
       setTimeout(() => {
-        new Notification('알람 시간입니다.').show();
+        const options = {
+          title: '스트레칭 3분 전입니다.',
+          body: `이번엔 ${alarm.bodyPart} 스트레칭 시간입니다.`,
+        };
+
+        new Notification(options).show();
+      }, diffMilliseconds - 1000 * 60 * 3);
+
+      setTimeout(() => {
+        createWindow();
       }, diffMilliseconds);
     }
   });
-}, 1000 * 2);
+}, 1000 * 60 * 10);
 
 app.on('ready', () => {
   createWindow();

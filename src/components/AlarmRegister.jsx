@@ -35,7 +35,7 @@ const SubmitButton = styled.input`
 
 export default function AlarmRegister({ onRegisterAlarmSubmit }) {
   const [time, setTime] = useState(null);
-  const [bodyPart, setBodyPart] = useState(null);
+  const [bodyPart, setBodyPart] = useState("wrist");
 
   return (
     <div>
@@ -71,4 +71,3 @@ export default function AlarmRegister({ onRegisterAlarmSubmit }) {
     </div>
   );
 }
-
