@@ -1,0 +1,16 @@
+{
+  "alarms": [
+    {
+      "time": "01:45",
+      "bodyPart": "waist"
+    },
+    {
+      "time": "00:45",
+      "bodyPart": "waist"
+    },
+    {
+      "time": "00:55",
+      "bodyPart": "back"
+    }
+  ]
+}
