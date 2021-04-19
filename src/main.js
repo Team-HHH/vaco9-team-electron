@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const { getVideos } = require('./apis');
-const Store = require('../store');
+const VideoStore = require('./store/videos');
+const AlarmStore = require('./store/alarms');
 
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -20,9 +21,16 @@ const createWindow = () => {
   mainWindow.webContents.openDevTools();
 };
 
-const stretchVideos = new Store({
+const stretchVideos = new VideoStore({
   configName: 'stretchVideos',
   defaults: {},
+});
+
+const alarms = new AlarmStore({
+  configName: 'alarms',
+  defaults: {
+    alarms: []
+  },
 });
 
 (async function () {
@@ -51,21 +59,5 @@ app.on('activate', () => {
 });
 
 ipcMain.on('storeAlarm', (event, arg) => {
-  fs.readFile("./alarmData.json", 'utf8', (err, data) => {
-    if (err) {
-      return;
-    }
-
-    const file = JSON.parse(data);
-
-    file.alarms.push({ "time": arg.time, "bodyPart": arg.bodyPart });
-
-    const json = JSON.stringify(file);
-
-    fs.writeFile("./alarmData.json", json, 'utf8', function (err) {
-      if (err) {
-        return;
-      }
-    });
-  });
+  alarms.set(arg.time, arg.bodyPart);
 });

@@ -10,18 +10,13 @@ class Store {
     this.data = parseDataFile(this.path, opts.defaults);
   }
 
-  get(key) {
-    this.data = parseDataFile(this.path, opts.defaults);
-    return this.data[key];
+  get() {
+    this.data = parseDataFile(this.path);
+    return this.data.alarms;
   }
 
-  getAll() {
-    this.data = parseDataFile(this.path, opts.defaults);
-    return this.data;
-  }
-
-  set(key, val) {
-    this.data[key] = val;
+  set(time, bodyPart) {
+    this.data.alarms.push({ time, bodyPart });
 
     fs.writeFileSync(this.path, JSON.stringify(this.data));
   }
