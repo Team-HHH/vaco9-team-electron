@@ -1,8 +1,23 @@
 import React, { useState } from 'react';
 import AlarmNavbar from '../components/AlarmNavbar.jsx';
 import AlarmRegister from '../components/AlarmRegister.jsx';
+import styled from 'styled-components';
 
 import { ipcRenderer } from "electron";
+
+const Container = styled.div`
+  display: flex;
+`;
+
+const LeftSection = styled.div`
+  width: 30%;
+  background-color: #F5F5F5;
+`;
+
+const RightSection = styled.div`
+  width: 70%;
+  color: green;
+`;
 
 export default function AlarmRegisterPage() {
   const [alarms, setAlarms] = useState([]);
@@ -25,12 +40,16 @@ export default function AlarmRegisterPage() {
   }
 
   return (
-    <>
-      <AlarmNavbar
-        alarms={alarms}
-        onDeleteButtonClick={handleDeleteButtonClick}
-      />
-      <AlarmRegister onRegisterAlarmSubmit={handleRegisterAlarmSubmit} />
-    </>
+    <Container>
+      <LeftSection>
+        <AlarmNavbar
+          alarms={alarms}
+          onDeleteButtonClick={handleDeleteButtonClick}
+        />
+      </LeftSection>
+      <RightSection>
+        <AlarmRegister onRegisterAlarmSubmit={handleRegisterAlarmSubmit} />
+      </RightSection>
+    </Container>
   );
 }

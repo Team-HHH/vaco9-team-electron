@@ -5,7 +5,7 @@ export default function AlarmNavbar({ alarms, onDeleteButtonClick }) {
   const handleDeleteButtonClick = (event) => onDeleteButtonClick(event.target.id);
 
   return (
-    <div>
+    <>
       {alarms.map(alarm => (
         <AlarmCard
           key={alarm.time}
@@ -13,6 +13,6 @@ export default function AlarmNavbar({ alarms, onDeleteButtonClick }) {
           onDeleteButtonClick={handleDeleteButtonClick}
         />
       ))}
-    </div>
+    </>
   );
 }
