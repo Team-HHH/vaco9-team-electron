@@ -1,6 +1,6 @@
 const { app, BrowserWindow, ipcMain, Notification } = require('electron');
 const { parse, isFuture, differenceInMilliseconds } = require('date-fns');
-const { getVideos } = require('./apis');
+const { getVideos, getAds } = require('./apis');
 const VideoStore = require('./store/videos');
 const AlarmStore = require('./store/alarms');
 
@@ -43,15 +43,18 @@ const alarms = new AlarmStore({
   }
 })();
 
-setInterval(() => {
+setInterval(async () => {
   const currentAlarms = alarms.get();
   const now = new Date();
 
-  currentAlarms.forEach((alarm) => {
+  for (const alarm of currentAlarms) {
     const alarmTime = parse(alarm.time, 'HH:mm', new Date());
     const diffMilliseconds = differenceInMilliseconds(alarmTime, now);
 
     if (isFuture(alarmTime) && diffMilliseconds < 1000 * 60 * 10) {
+      const response =  await getAds();
+      const { _id, content } = response.data.data;
+
       setTimeout(() => {
         const options = {
           title: '스트레칭 3분 전입니다.',
@@ -65,7 +68,7 @@ setInterval(() => {
         createWindow();
       }, diffMilliseconds);
     }
-  });
+  };
 }, 1000 * 60 * 10);
 
 app.on('ready', () => {

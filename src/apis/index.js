@@ -6,3 +6,10 @@ exports.getVideos = async function () {
 
   return response;
 };
+
+exports.getAds = async function () {
+  const url = 'http://localhost:5000/campaign/popup';
+  const response = await axios.get(url);
+
+  return response;
+};
