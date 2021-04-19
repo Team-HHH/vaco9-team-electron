@@ -13,8 +13,14 @@ export default function AlarmRegisterPage() {
 
   function handleRegisterAlarmSubmit(event, time, bodyPart) {
     event.preventDefault();
+
+    if (alarms.some(alarm => alarm.time === time)) {
+      return;
+    }
+
     const alarm = { time, bodyPart };
 
+    setAlarms(alarms.concat(alarm).sort());
     ipcRenderer.send('storeAlarm', alarm);
   }
 
