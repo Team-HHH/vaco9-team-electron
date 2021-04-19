@@ -46,6 +46,7 @@ export default function AlarmRegister({ onRegisterAlarmSubmit }) {
           <input
             type='time'
             name='time'
+            step="600"
             onChange={(e) => { setTime(e.target.value) }}
             required
           />
