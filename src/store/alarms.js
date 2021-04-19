@@ -20,6 +20,14 @@ class Store {
 
     fs.writeFileSync(this.path, JSON.stringify(this.data));
   }
+
+  delete(time) {
+    this.data.alarms = this.data.alarms.filter((alarm) => {
+      return alarm.time !== time;
+    });
+
+    fs.writeFileSync(this.path, JSON.stringify(this.data));
+  }
 }
 
 function parseDataFile(filePath, defaults) {

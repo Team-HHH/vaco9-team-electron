@@ -52,7 +52,6 @@ setInterval(() => {
     const diffMilliseconds = differenceInMilliseconds(alarmTime, now);
 
     if (isFuture(alarmTime) && diffMilliseconds < 1000 * 60 * 10) {
-      console.log('타임아웃 설정됨.')
       setTimeout(() => {
         const options = {
           title: '스트레칭 3분 전입니다.',
@@ -93,4 +92,8 @@ ipcMain.on('requestAlarms', (event) => {
   const currentAlarms = alarms.get();
 
   event.sender.send('loadAlarms', currentAlarms);
+});
+
+ipcMain.on('deleteAlarm', (event, arg) => {
+  alarms.delete(arg);
 });
