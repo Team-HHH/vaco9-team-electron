@@ -1,4 +1,5 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, Notification } = require('electron');
+const { parse, isFuture, differenceInMilliseconds } = require('date-fns');
 const { getVideos } = require('./apis');
 const VideoStore = require('./store/videos');
 const AlarmStore = require('./store/alarms');
@@ -29,7 +30,7 @@ const stretchVideos = new VideoStore({
 const alarms = new AlarmStore({
   configName: 'alarms',
   defaults: {
-    alarms: []
+    alarms: [],
   },
 });
 
@@ -41,6 +42,22 @@ const alarms = new AlarmStore({
     stretchVideos.set(video.bodyPart, video.urls);
   }
 })();
+
+setTimeout(() => {
+  const currentAlarms = alarms.get();
+  const now = new Date();
+
+  currentAlarms.forEach((alarm) => {
+    const alarmTime = parse(alarm.time, 'HH:mm', new Date());
+    const diffMilliseconds = differenceInMilliseconds(alarmTime, now);
+
+    if (isFuture(alarmTime) && diffMilliseconds < 1000 * 60 * 10) {
+      setTimeout(() => {
+        new Notification('알람 시간입니다.').show();
+      }, diffMilliseconds);
+    }
+  });
+}, 1000 * 2);
 
 app.on('ready', () => {
   createWindow();
@@ -60,4 +77,10 @@ app.on('activate', () => {
 
 ipcMain.on('storeAlarm', (event, arg) => {
   alarms.set(arg.time, arg.bodyPart);
+});
+
+ipcMain.on('requestAlarms', (event) => {
+  const currentAlarms = alarms.get();
+
+  event.sender.send('loadAlarms', currentAlarms);
 });
