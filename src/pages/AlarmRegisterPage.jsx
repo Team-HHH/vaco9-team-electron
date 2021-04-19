@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AlarmNavbar from '../components/AlarmNavbar.jsx';
 import AlarmRegister from '../components/AlarmRegister.jsx';
 import styled from 'styled-components';
@@ -16,11 +16,17 @@ const LeftSection = styled.div`
 
 const RightSection = styled.div`
   width: 70%;
-  color: green;
 `;
 
 export default function AlarmRegisterPage() {
   const [alarms, setAlarms] = useState([]);
+
+  useEffect(() => {
+    ipcRenderer.send('requestAlarms');
+    ipcRenderer.on('loadAlarms', (event, data) => {
+      setAlarms(data);
+    });
+  }, []);
 
   function handleDeleteButtonClick(time) {
     setAlarms(alarms.filter(alarm => alarm.time !== time));
