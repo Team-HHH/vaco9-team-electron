@@ -44,8 +44,8 @@ export default function AlarmRegister({ onRegisterAlarmSubmit }) {
       >
         <SelectorWrapper>
           <input
-            type='time'
-            name='time'
+            type="time"
+            name="time"
             step="600"
             onChange={(e) => { setTime(e.target.value) }}
             required
@@ -54,18 +54,18 @@ export default function AlarmRegister({ onRegisterAlarmSubmit }) {
         <HorizontalLine />
         <SelectorWrapper>
           <select
-            name='bodyPart'
+            name="bodyPart"
             onChange={(e) => { setBodyPart(e.target.value) }}
             required
           >
-            <option value={'wrist'}>손목</option>
-            <option value={'back'}>등</option>
-            <option value={'waist'}>허리</option>
-            <option value={'neck'}>목</option>
+            <option value={"wrist"}>손목</option>
+            <option value={"back"}>등</option>
+            <option value={"waist"}>허리</option>
+            <option value={"neck"}>목</option>
           </select>
         </SelectorWrapper>
         <SubmitButtonWrapper>
-          <SubmitButton type='submit' value='저장하기' />
+          <SubmitButton type="submit" value='저장하기' />
         </SubmitButtonWrapper>
       </AlarmRegisterForm>
     </div>
