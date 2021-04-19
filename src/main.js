@@ -1,6 +1,6 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
-const path = require('path');
-const fs = require('fs');
+const { getVideos } = require('./apis');
+const Store = require('../store');
 
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -13,14 +13,30 @@ const createWindow = () => {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-    }
+    },
   });
 
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
   mainWindow.webContents.openDevTools();
 };
 
-app.on('ready', createWindow);
+const stretchVideos = new Store({
+  configName: 'stretchVideos',
+  defaults: {},
+});
+
+(async function () {
+  const response = await getVideos();
+  const { videos } = response.data.data;
+
+  for (const video of videos) {
+    stretchVideos.set(video.bodyPart, video.urls);
+  }
+})();
+
+app.on('ready', () => {
+  createWindow();
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -34,8 +50,8 @@ app.on('activate', () => {
   }
 });
 
-ipcMain.on('storeAlarm', async (event, arg) => {
-  fs.readFile("./alarmData.json", 'utf8', async (err, data) => {
+ipcMain.on('storeAlarm', (event, arg) => {
+  fs.readFile("./alarmData.json", 'utf8', (err, data) => {
     if (err) {
       return;
     }
