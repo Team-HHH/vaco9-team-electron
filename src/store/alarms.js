@@ -8,6 +8,7 @@ class Store {
 
     this.path = path.join(userDataPath, opts.configName + '.json');
     this.data = parseDataFile(this.path, opts.defaults);
+    fs.writeFileSync(this.path, JSON.stringify(this.data));
   }
 
   get() {
@@ -33,7 +34,7 @@ class Store {
 function parseDataFile(filePath, defaults) {
   try {
     return JSON.parse(fs.readFileSync(filePath));
-  } catch(error) {
+  } catch (error) {
     return defaults;
   }
 }

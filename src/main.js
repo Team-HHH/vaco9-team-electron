@@ -52,7 +52,7 @@ setInterval(async () => {
     const diffMilliseconds = differenceInMilliseconds(alarmTime, now);
 
     if (isFuture(alarmTime) && diffMilliseconds < 1000 * 60 * 10) {
-      const response =  await getAds();
+      const response = await getAds();
       const { _id, content } = response.data.data;
 
       setTimeout(() => {
@@ -100,3 +100,4 @@ ipcMain.on('requestAlarms', (event) => {
 ipcMain.on('deleteAlarm', (event, arg) => {
   alarms.delete(arg);
 });
+
