@@ -25,16 +25,20 @@ const createWindow = () => {
 const createVideoWindow = () => {
   const videoWindow = new BrowserWindow({
     fullscreen: true,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+    },
   });
 
   videoWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
-
+  videoWindow.webContents.openDevTools();
   videoWindow.webContents.on('did-finish-load', () => {
     videoWindow.webContents.send('playVieo', 'https://www.youtube.com/watch?v=61QSHrOuGEA');
   });
 
   ipcMain.on('closevideo', (event, arg) => {
-    mainWindow.close();
+    videoWindow.close();
   });
 }
 
@@ -69,7 +73,7 @@ setInterval(async () => {
 
     if (isFuture(alarmTime) && diffMilliseconds < 1000 * 60 * 10) {
       const response = await getAds();
-      const { _id, content } = response.data.data;
+      const { campaignId, content } = response.data.data;
 
       setTimeout(() => {
         const options = {
