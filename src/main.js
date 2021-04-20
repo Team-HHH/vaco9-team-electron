@@ -4,6 +4,8 @@ const { getVideos, getAds } = require('./apis');
 const VideoStore = require('./store/videos');
 const AlarmStore = require('./store/alarms');
 
+const bodyParts = require('./constants/index');
+
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
@@ -78,7 +80,7 @@ setInterval(async () => {
       setTimeout(() => {
         const options = {
           title: '스트레칭 3분 전입니다.',
-          body: `이번엔 ${alarm.bodyPart} 스트레칭 시간입니다.`,
+          body: `이번엔 ${bodyParts[alarm.bodyPart]} 스트레칭 시간입니다.`,
         };
 
         new Notification(options).show();
