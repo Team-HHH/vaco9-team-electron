@@ -1,6 +1,6 @@
 const { app, BrowserWindow, ipcMain, Notification } = require('electron');
 const { parse, isFuture, differenceInMilliseconds } = require('date-fns');
-const { getVideos, getAds } = require('./apis');
+const { getVideos, getAds, sendStats } = require('./apis');
 const VideoStore = require('./store/videos');
 const AlarmStore = require('./store/alarms');
 
@@ -32,9 +32,9 @@ const createVideoWindow = () => {
       contextIsolation: false,
     },
   });
-
+  await sendStats("607d40e5be3a5837cd1845c4", 'reach');
   videoWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
-  videoWindow.webContents.openDevTools();
+
   videoWindow.webContents.on('did-finish-load', () => {
     videoWindow.webContents.send('playVieo', 'https://www.youtube.com/watch?v=61QSHrOuGEA');
   });
@@ -84,14 +84,14 @@ setInterval(async () => {
         };
 
         new Notification(options).show();
-      }, diffMilliseconds - 1000 * 60 * 3);
+      }, diffMilliseconds - 1000 * 60 * 10);
 
       setTimeout(() => {
         createVideoWindow();
       }, diffMilliseconds);
     }
   };
-}, 1000 * 60 * 10);
+}, 1000 * 60 * 3);
 
 app.on('ready', () => {
   createWindow();

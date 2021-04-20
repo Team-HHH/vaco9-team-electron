@@ -15,8 +15,9 @@ exports.getAds = async function () {
 };
 
 exports.sendStats = async function (campaignId, type) {
+  console.log(campaignId, type);
   const url = 'http://localhost:5000/campaign/stats';
-  await axios.post(url, {
+  await axios.patch(url, {
     campaignId,
     type
   });
