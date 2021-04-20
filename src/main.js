@@ -30,7 +30,7 @@ const createVideoWindow = () => {
   videoWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   videoWindow.webContents.on('did-finish-load', () => {
-    videoWindow.webContents.send('playVieo', "https://www.youtube.com/watch?v=61QSHrOuGEA")
+    videoWindow.webContents.send('playVieo', 'https://www.youtube.com/watch?v=61QSHrOuGEA');
   });
 
   ipcMain.on('closevideo', (event, arg) => {
@@ -116,4 +116,3 @@ ipcMain.on('requestAlarms', (event) => {
 ipcMain.on('deleteAlarm', (event, arg) => {
   alarms.delete(arg);
 });
-

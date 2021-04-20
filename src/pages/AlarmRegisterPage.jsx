@@ -3,7 +3,7 @@ import AlarmNavbar from '../components/AlarmNavbar.jsx';
 import AlarmRegister from '../components/AlarmRegister.jsx';
 import styled from 'styled-components';
 
-import { ipcRenderer } from "electron";
+import { ipcRenderer } from 'electron';
 
 const Container = styled.div`
   display: flex;

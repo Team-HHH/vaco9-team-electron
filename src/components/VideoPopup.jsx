@@ -1,63 +1,47 @@
 import React from 'react';
 import YouTube from "react-youtube";
+import styled from 'styled-components';
 import { ipcRenderer } from 'electron';
+import { sendStats } from '../apis/index';
 
+const PopupWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100vh;
+  width: 100%;
+`;
 
-// const modalStyles = {
-//   content: {
-//     top: "50%",
-//     left: "50%",
-//     right: "auto",
-//     bottom: "auto",
-//     marginRight: "-50%",
-//     transform: "translate(-50%, -50%)"
-//   }
-// };
-const checkElapsedTime = (e) => {
-  console.log(e.target.playerInfo.playerState);
-  const duration = e.target.getDuration();
-  const currentTime = e.target.getCurrentTime();
-  if (currentTime / duration > 0.95) {
-    setModalIsOpen(true);
-  }
-};
-
-export default function VideoPopup({ videoUrl }) {
-  const [modalIsOpen, setModalIsOpen] = React.useState(false);
-
+export default function VideoPopup({ videoUrl, campaignId, content }) {
   let videoCode;
+
   if (videoUrl) {
-    videoCode = videoUrl.split("v=")[1].split("&")[0];
+    videoCode = videoUrl.split('v=')[1].split('&')[0];
   }
 
-  const checkElapsedTime = (e) => {
-
-    console.log(e.data);
-    // const duration = e.target.getDuration();
-    // const currentTime = e.target.getCurrentTime();
-    // if (currentTime / duration > 0.95) {
-    //   setModalIsOpen(true);
-    // }
-
-    if (e.data === 0) {
-      ipcRenderer.send("closevideo");
+  const checkElapsedTime = (event) => {
+    if (event.data === 0) {
+      ipcRenderer.send('closevideo');
     }
   };
 
   const opts = {
     playerVars: {
-      // https://developers.google.com/youtube/player_parameters
       autoplay: 1
     }
   };
 
-  const handleExerciseComplete = () => console.log("Do something");
+  function handleClickBanner(event) {
+    event.preventDefault();
+
+    sendStats(campaignId, 'click');
+  }
 
   return (
-    <div>
+    <PopupWrapper>
       <div>
         <h1>Video</h1>
-        <div></div>
       </div>
       <div>
         <div>
@@ -65,11 +49,21 @@ export default function VideoPopup({ videoUrl }) {
             videoId={videoCode}
             allow="fullscreen;"
             containerClassName="embed embed-youtube"
-            onStateChange={(e) => checkElapsedTime(e)}
+            onStateChange={(event) => checkElapsedTime(event)}
             opts={opts}
           />
         </div>
       </div>
-    </div>
-  )
+      <div>
+        <a href="https://www.naver.com/" target="_blank">
+          <img
+            src={content}
+            width="100%"
+            height="100px"
+            onClick={handleClickBanner}
+          />
+        </a>
+      </div>
+    </PopupWrapper>
+  );
 }
