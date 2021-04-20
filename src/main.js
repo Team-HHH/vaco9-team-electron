@@ -24,7 +24,7 @@ const createWindow = () => {
   mainWindow.webContents.openDevTools();
 };
 
-const createVideoWindow = () => {
+const createVideoWindow = async (campaignId, content, videoUrl) => {
   const videoWindow = new BrowserWindow({
     fullscreen: true,
     webPreferences: {
@@ -32,11 +32,11 @@ const createVideoWindow = () => {
       contextIsolation: false,
     },
   });
-  await sendStats("607d40e5be3a5837cd1845c4", 'reach');
+  await sendStats(campaignId, 'reach');
   videoWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   videoWindow.webContents.on('did-finish-load', () => {
-    videoWindow.webContents.send('playVieo', 'https://www.youtube.com/watch?v=61QSHrOuGEA');
+    videoWindow.webContents.send('playVideo', campaignId, content, videoUrl);
   });
 
   ipcMain.on('closevideo', (event, arg) => {
@@ -87,11 +87,14 @@ setInterval(async () => {
       }, diffMilliseconds - 1000 * 60 * 10);
 
       setTimeout(() => {
-        createVideoWindow();
+        const videos = stretchVideos.get(alarm.bodyPart);
+        const videoUrl = videos[Math.floor(Math.random() * videos.length)];
+
+        createVideoWindow(campaignId, content, videoUrl);
       }, diffMilliseconds);
     }
   };
-}, 1000 * 60 * 3);
+}, 1000 * 60 * 10);
 
 app.on('ready', () => {
   createWindow();

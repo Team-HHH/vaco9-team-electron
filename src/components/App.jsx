@@ -10,7 +10,7 @@ export default function App() {
   const [content, setContent] = useState('');
 
   useEffect(() => {
-    ipcRenderer.on('playVieo', (event, url) => {
+    ipcRenderer.on('playVideo', (event, campaignId, content, url) => {
       setVideoUrl(url);
       setCampaignId(campaignId);
       setContent(content);
