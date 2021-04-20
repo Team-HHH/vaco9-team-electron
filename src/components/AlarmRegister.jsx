@@ -58,10 +58,10 @@ export default function AlarmRegister({ onRegisterAlarmSubmit }) {
             onChange={(e) => { setBodyPart(e.target.value) }}
             required
           >
-            <option value={"wrist"}>손목</option>
-            <option value={"back"}>등</option>
-            <option value={"waist"}>허리</option>
-            <option value={"neck"}>목</option>
+            <option value={'wrist'}>손목</option>
+            <option value={'back'}>등</option>
+            <option value={'waist'}>허리</option>
+            <option value={'neck'}>목</option>
           </select>
         </SelectorWrapper>
         <SubmitButtonWrapper>
