@@ -22,6 +22,22 @@ const createWindow = () => {
   mainWindow.webContents.openDevTools();
 };
 
+const createVideoWindow = () => {
+  const videoWindow = new BrowserWindow({
+    fullscreen: true,
+  });
+
+  videoWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
+
+  videoWindow.webContents.on('did-finish-load', () => {
+    videoWindow.webContents.send('playVieo', "https://www.youtube.com/watch?v=61QSHrOuGEA")
+  });
+
+  ipcMain.on('closevideo', (event, arg) => {
+    mainWindow.close();
+  });
+}
+
 const stretchVideos = new VideoStore({
   configName: 'stretchVideos',
   defaults: {},
@@ -65,7 +81,7 @@ setInterval(async () => {
       }, diffMilliseconds - 1000 * 60 * 3);
 
       setTimeout(() => {
-        createWindow();
+        createVideoWindow();
       }, diffMilliseconds);
     }
   };
