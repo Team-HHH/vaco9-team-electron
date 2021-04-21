@@ -13,3 +13,11 @@ exports.getAds = async function () {
 
   return response;
 };
+
+exports.sendStats = async function (campaignId, type) {
+  const url = 'http://localhost:5000/campaign/stats';
+  await axios.patch(url, {
+    campaignId,
+    type
+  });
+}

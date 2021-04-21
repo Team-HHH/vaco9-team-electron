@@ -1,8 +1,10 @@
 const { app, BrowserWindow, ipcMain, Notification } = require('electron');
 const { parse, isFuture, differenceInMilliseconds } = require('date-fns');
-const { getVideos, getAds } = require('./apis');
+const { getVideos, getAds, sendStats } = require('./apis');
 const VideoStore = require('./store/videos');
 const AlarmStore = require('./store/alarms');
+
+const bodyParts = require('./constants/index');
 
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -22,19 +24,23 @@ const createWindow = () => {
   mainWindow.webContents.openDevTools();
 };
 
-const createVideoWindow = () => {
+const createVideoWindow = async (campaignId, content, videoUrl) => {
   const videoWindow = new BrowserWindow({
     fullscreen: true,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+    },
   });
-
+  await sendStats(campaignId, 'reach');
   videoWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   videoWindow.webContents.on('did-finish-load', () => {
-    videoWindow.webContents.send('playVieo', 'https://www.youtube.com/watch?v=61QSHrOuGEA');
+    videoWindow.webContents.send('playVideo', campaignId, content, videoUrl);
   });
 
   ipcMain.on('closevideo', (event, arg) => {
-    mainWindow.close();
+    videoWindow.close();
   });
 }
 
@@ -69,19 +75,22 @@ setInterval(async () => {
 
     if (isFuture(alarmTime) && diffMilliseconds < 1000 * 60 * 10) {
       const response = await getAds();
-      const { _id, content } = response.data.data;
+      const { campaignId, content } = response.data.data;
 
       setTimeout(() => {
         const options = {
           title: '스트레칭 3분 전입니다.',
-          body: `이번엔 ${alarm.bodyPart} 스트레칭 시간입니다.`,
+          body: `이번엔 ${bodyParts[alarm.bodyPart]} 스트레칭 시간입니다.`,
         };
 
         new Notification(options).show();
-      }, diffMilliseconds - 1000 * 60 * 3);
+      }, diffMilliseconds - 1000 * 60 * 10);
 
       setTimeout(() => {
-        createVideoWindow();
+        const videos = stretchVideos.get(alarm.bodyPart);
+        const videoUrl = videos[Math.floor(Math.random() * videos.length)];
+
+        createVideoWindow(campaignId, content, videoUrl);
       }, diffMilliseconds);
     }
   };
