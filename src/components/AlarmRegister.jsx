@@ -36,17 +36,17 @@ const SubmitButton = styled.input`
 export default function AlarmRegister({ onRegisterAlarmSubmit }) {
   const [time, setTime] = useState(null);
   const [bodyPart, setBodyPart] = useState("wrist");
+  const [customVideo, setCustomVideo] = useState('');
 
   return (
     <div>
       <AlarmRegisterForm
-        onSubmit={(e) => { onRegisterAlarmSubmit(e, time, bodyPart) }}
+        onSubmit={(e) => { onRegisterAlarmSubmit(e, time, bodyPart, customVideo) }}
       >
         <SelectorWrapper>
           <input
             type="time"
             name="time"
-            step="600"
             onChange={(e) => { setTime(e.target.value) }}
             required
           />
@@ -64,6 +64,8 @@ export default function AlarmRegister({ onRegisterAlarmSubmit }) {
             <option value={'neck'}>목</option>
           </select>
         </SelectorWrapper>
+        <label htmlFor="customVideo">커스텀 비디오 설정</label>
+        <input type="text" name="customVideo" id="customVideo" onChange={(e) => setCustomVideo(e.target.value)}/>
         <SubmitButtonWrapper>
           <SubmitButton type="submit" value='저장하기' />
         </SubmitButtonWrapper>

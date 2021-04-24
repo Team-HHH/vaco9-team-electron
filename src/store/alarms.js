@@ -16,8 +16,8 @@ class Store {
     return this.data.alarms;
   }
 
-  set(time, bodyPart) {
-    this.data.alarms.push({ time, bodyPart });
+  set(time, bodyPart, customVideo) {
+    this.data.alarms.push({ time, bodyPart, customVideo });
 
     fs.writeFileSync(this.path, JSON.stringify(this.data));
   }

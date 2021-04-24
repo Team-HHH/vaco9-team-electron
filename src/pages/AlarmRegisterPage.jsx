@@ -34,14 +34,14 @@ export default function AlarmRegisterPage() {
     ipcRenderer.send('deleteAlarm', time);
   }
 
-  function handleRegisterAlarmSubmit(event, time, bodyPart) {
+  function handleRegisterAlarmSubmit(event, time, bodyPart, customVideo) {
     event.preventDefault();
 
     if (alarms.some(alarm => alarm.time === time)) {
       return;
     }
 
-    const alarm = { time, bodyPart };
+    const alarm = { time, bodyPart, customVideo };
 
     setAlarms(alarms.concat(alarm).sort());
     ipcRenderer.send('storeAlarm', alarm);
