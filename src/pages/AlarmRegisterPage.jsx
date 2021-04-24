@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { ipcRenderer } from 'electron';
+import styled from 'styled-components';
 import AlarmNavbar from '../components/AlarmNavbar.jsx';
 import AlarmRegister from '../components/AlarmRegister.jsx';
-import styled from 'styled-components';
-
-import { ipcRenderer } from 'electron';
 
 const Container = styled.div`
   display: flex;
@@ -34,6 +33,10 @@ export default function AlarmRegisterPage() {
     ipcRenderer.send('deleteAlarm', time);
   }
 
+  function handleToggleClick(time) {
+    ipcRenderer.send('toggleAlarm', time);
+  }
+
   function handleRegisterAlarmSubmit(event, time, bodyPart, customVideo) {
     event.preventDefault();
 
@@ -53,6 +56,7 @@ export default function AlarmRegisterPage() {
         <AlarmNavbar
           alarms={alarms}
           onDeleteButtonClick={handleDeleteButtonClick}
+          onToggleClick={handleToggleClick}
         />
       </LeftSection>
       <RightSection>
