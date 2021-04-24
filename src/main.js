@@ -3,7 +3,6 @@ const { parse, isFuture, differenceInMilliseconds } = require('date-fns');
 const { getVideos, getAds, sendStats } = require('./apis');
 const VideoStore = require('./store/videos');
 const AlarmStore = require('./store/alarms');
-
 const bodyParts = require('./constants/index');
 const timerIds = {};
 
@@ -33,6 +32,7 @@ const createVideoWindow = async (campaignId, content, videoUrl) => {
       contextIsolation: false,
     },
   });
+
   await sendStats(campaignId, 'reach');
   videoWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
