@@ -1,6 +1,6 @@
 module.exports = {
-  NECK: "목",
-  BACK: "등",
-  WAIST: "허리",
-  WRIST: "손목",
+  neck: "목",
+  back: "등",
+  waist: "허리",
+  wrist: "손목",
 }

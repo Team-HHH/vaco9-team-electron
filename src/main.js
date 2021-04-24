@@ -5,6 +5,7 @@ const VideoStore = require('./store/videos');
 const AlarmStore = require('./store/alarms');
 
 const bodyParts = require('./constants/index');
+const timerIds = {};
 
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -65,36 +66,47 @@ const alarms = new AlarmStore({
   }
 })();
 
-setInterval(async () => {
-  const currentAlarms = alarms.get();
+async function prepareAlarm(alarm) {
+  const currentAlarms = alarm ? [alarm] : alarms.get();
   const now = new Date();
 
   for (const alarm of currentAlarms) {
     const alarmTime = parse(alarm.time, 'HH:mm', new Date());
     const diffMilliseconds = differenceInMilliseconds(alarmTime, now);
 
-    if (isFuture(alarmTime) && diffMilliseconds < 1000 * 60 * 10) {
+    if (isFuture(alarmTime)) {
       const response = await getAds();
       const { campaignId, content } = response.data.data;
 
-      setTimeout(() => {
+      const notifyId = setTimeout(() => {
         const options = {
           title: '스트레칭 3분 전입니다.',
           body: `이번엔 ${bodyParts[alarm.bodyPart]} 스트레칭 시간입니다.`,
         };
 
         new Notification(options).show();
-      }, diffMilliseconds - 1000 * 60 * 10);
+      }, diffMilliseconds - 1000 * 60 * 3);
 
-      setTimeout(() => {
-        const videos = stretchVideos.get(alarm.bodyPart);
-        const videoUrl = videos[Math.floor(Math.random() * videos.length)];
+      const popupId = setTimeout(() => {
+        if (alarm.customVideo.length !== 0) {
+          createVideoWindow(campaignId, content, alarm.customVideo);
+        } else {
+          const videos = stretchVideos.get(alarm.bodyPart);
+          const videoUrl = videos[Math.floor(Math.random() * videos.length)];
 
-        createVideoWindow(campaignId, content, videoUrl);
+          createVideoWindow(campaignId, content, videoUrl);
+        }
       }, diffMilliseconds);
+
+      timerIds[alarm.time] = {
+        'notifyId': notifyId,
+        'popupId': popupId,
+      };
     }
   };
-}, 1000 * 60 * 10);
+};
+
+prepareAlarm();
 
 app.on('ready', () => {
   createWindow();
@@ -112,8 +124,10 @@ app.on('activate', () => {
   }
 });
 
-ipcMain.on('storeAlarm', (event, arg) => {
-  alarms.set(arg.time, arg.bodyPart);
+ipcMain.on('storeAlarm', (event, alarm) => {
+  prepareAlarm(alarm);
+
+  alarms.set(alarm.time, alarm.bodyPart, alarm.customVideo);
 });
 
 ipcMain.on('requestAlarms', (event) => {
@@ -122,6 +136,9 @@ ipcMain.on('requestAlarms', (event) => {
   event.sender.send('loadAlarms', currentAlarms);
 });
 
-ipcMain.on('deleteAlarm', (event, arg) => {
-  alarms.delete(arg);
+ipcMain.on('deleteAlarm', (event, time) => {
+  clearTimeout(timerIds[time].notifyId);
+  clearTimeout(timerIds[time].popupId);
+
+  alarms.delete(time);
 });
