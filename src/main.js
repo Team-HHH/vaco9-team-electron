@@ -3,7 +3,6 @@ const { parse, isFuture, differenceInMilliseconds } = require('date-fns');
 const { getVideos, getAds, sendStats } = require('./apis');
 const VideoStore = require('./store/videos');
 const AlarmStore = require('./store/alarms');
-
 const bodyParts = require('./constants/index');
 const timerIds = {};
 
@@ -33,6 +32,7 @@ const createVideoWindow = async (campaignId, content, videoUrl) => {
       contextIsolation: false,
     },
   });
+
   await sendStats(campaignId, 'reach');
   videoWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
@@ -101,6 +101,7 @@ async function prepareAlarm(alarm) {
       timerIds[alarm.time] = {
         'notifyId': notifyId,
         'popupId': popupId,
+        'status': 'active',
       };
     }
   };
@@ -137,8 +138,21 @@ ipcMain.on('requestAlarms', (event) => {
 });
 
 ipcMain.on('deleteAlarm', (event, time) => {
-  clearTimeout(timerIds[time].notifyId);
-  clearTimeout(timerIds[time].popupId);
+  if (timerIds[time]) {
+    clearTimeout(timerIds[time].notifyId);
+    clearTimeout(timerIds[time].popupId);
+    timerIds[time].status = 'deleted';
+  }
 
   alarms.delete(time);
+});
+
+ipcMain.on('toggleAlarm', (event, time) => {
+  if (timerIds[time].status === 'active') {
+    clearTimeout(timerIds[time].notifyId);
+    clearTimeout(timerIds[time].popupId);
+    timerIds[time].status = 'pause';
+  } else if (timerIds[time].status === 'pause') {
+    prepareAlarm(alarms.get().find(alarm => alarm.time === time));
+  }
 });

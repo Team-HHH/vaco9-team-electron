@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import YouTube from "react-youtube";
-import styled from 'styled-components';
+import styled, { css } from "styled-components";
 import { ipcRenderer } from 'electron';
 import { sendStats } from '../apis/index';
 
@@ -9,11 +9,72 @@ const PopupWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  height: 100vh;
+  height: 100%;
   width: 100%;
 `;
 
+const VideoWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  height: calc(100vh - 100px);
+
+  div {
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+const BannerWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100px;
+`;
+
+const Banner = styled.img`
+  width: 100%;
+  height: 100%;
+`;
+
+const LoadingWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  background: #00A82D;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  opacity: 1;
+
+  ${props =>
+    css`
+      transition: all ${props.speed} ${props.delay} ease;
+    `}
+
+  ${props =>
+    props.hide &&
+    css`
+      top: -100%;
+      opacity: 0;
+    `}
+
+  p {
+    margin: 0 0 1em 0;
+    font-size: 2em;
+    color: #ffffff;
+  }
+`;
+
 export default function VideoPopup({ videoUrl, campaignId, content }) {
+  const [test, setTest] = useState(false);
+
+  setTimeout(() => {
+    setTest(true);
+  }, 2000);
+
   let videoCode;
 
   if (videoUrl) {
@@ -27,6 +88,8 @@ export default function VideoPopup({ videoUrl, campaignId, content }) {
   };
 
   const opts = {
+    width: '100%',
+    height: '100%',
     playerVars: {
       autoplay: 1
     }
@@ -40,30 +103,26 @@ export default function VideoPopup({ videoUrl, campaignId, content }) {
 
   return (
     <PopupWrapper>
-      <div>
-        <h1>Video</h1>
-      </div>
-      <div>
-        <div>
-          <YouTube
-            videoId={videoCode}
-            allow="fullscreen;"
-            containerClassName="embed embed-youtube"
-            onStateChange={(event) => checkElapsedTime(event)}
-            opts={opts}
-          />
-        </div>
-      </div>
-      <div>
+      <LoadingWrapper hide={test} speed={"1s"} delay={"1.5s"}>
+        <p>스트레칭 시간입니다!!</p>
+      </LoadingWrapper>
+      <VideoWrapper>
+        <YouTube
+          videoId={videoCode}
+          allow="fullscreen;"
+          containerClassName="embed embed-youtube"
+          onStateChange={(event) => checkElapsedTime(event)}
+          opts={opts}
+        />
+      </VideoWrapper>
+      <BannerWrapper>
         <a href="https://www.naver.com/" target="_blank">
-          <img
+          <Banner
             src={content}
-            width="100%"
-            height="100px"
             onClick={handleClickBanner}
           />
         </a>
-      </div>
+      </BannerWrapper>
     </PopupWrapper>
   );
 }

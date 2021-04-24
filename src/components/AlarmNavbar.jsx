@@ -1,8 +1,9 @@
 import React from 'react';
 import AlarmCard from './AlarmCard.jsx';
 
-export default function AlarmNavbar({ alarms, onDeleteButtonClick }) {
+export default function AlarmNavbar({ alarms, onDeleteButtonClick, onToggleClick }) {
   const handleDeleteButtonClick = (event) => onDeleteButtonClick(event.target.id);
+  const handleToggleClick = (event) => onToggleClick(event.target.id);
 
   const sortedAlarms = alarms.sort((a, b) => {
     const [a1, a2] = a.time.split(':').map(Number);
@@ -18,6 +19,7 @@ export default function AlarmNavbar({ alarms, onDeleteButtonClick }) {
           key={alarm.time}
           time={alarm.time}
           onDeleteButtonClick={handleDeleteButtonClick}
+          onToggleClick={handleToggleClick}
         />
       ))}
     </>
