@@ -68,7 +68,7 @@ const LoadingWrapper = styled.div`
   }
 `;
 
-export default function VideoPopup({ videoUrl, campaignId, content }) {
+export default function VideoPopup({ videoUrl, campaignId, content, campaignUrl }) {
   const [test, setTest] = useState(false);
 
   setTimeout(() => {
@@ -116,7 +116,7 @@ export default function VideoPopup({ videoUrl, campaignId, content }) {
         />
       </VideoWrapper>
       <BannerWrapper>
-        <a href="https://www.naver.com/" target="_blank">
+        <a href={campaignUrl} target="_blank">
           <Banner
             src={content}
             onClick={handleClickBanner}

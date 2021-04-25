@@ -76,7 +76,7 @@ async function prepareAlarm(alarm) {
 
     if (isFuture(alarmTime)) {
       const response = await getAds();
-      const { campaignId, content } = response.data.data;
+      const { campaignId, content, campaignUrl } = response.data.data;
 
       const notifyId = setTimeout(() => {
         const options = {
@@ -89,12 +89,12 @@ async function prepareAlarm(alarm) {
 
       const popupId = setTimeout(() => {
         if (alarm.customVideo.length !== 0) {
-          createVideoWindow(campaignId, content, alarm.customVideo);
+          createVideoWindow(campaignId, content, alarm.customVideo, campaignUrl);
         } else {
           const videos = stretchVideos.get(alarm.bodyPart);
           const videoUrl = videos[Math.floor(Math.random() * videos.length)];
 
-          createVideoWindow(campaignId, content, videoUrl);
+          createVideoWindow(campaignId, content, videoUrl, campaignUrl);
         }
       }, diffMilliseconds);
 

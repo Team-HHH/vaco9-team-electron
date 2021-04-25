@@ -8,12 +8,14 @@ export default function App() {
   const [isVideoPlayed, setIsVideoPlayed] = useState(false);
   const [campaignId, setCampaignId] = useState('');
   const [content, setContent] = useState('');
+  const [campaignUrl, serCampaignUrl] = useState('');
 
   useEffect(() => {
-    ipcRenderer.on('playVideo', (event, campaignId, content, url) => {
+    ipcRenderer.on('playVideo', (event, campaignId, content, url, campaignUrl) => {
       setVideoUrl(url);
       setCampaignId(campaignId);
       setContent(content);
+      serCampaignUrl(campaignUrl);
       setIsVideoPlayed(true);
     });
   }, []);
@@ -25,6 +27,7 @@ export default function App() {
           videoUrl={videoUrl}
           campaignId={campaignId}
           content={content}
+          campaignUrl={campaignUrl}
         />
         : <AlarmRegisterPage />}
     </>
