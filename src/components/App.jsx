@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import { HashRouter as Router, Switch, Route } from 'react-router-dom';
+import { ipcRenderer } from 'electron';
 import VideoPopUp from '../components/VideoPopup.jsx';
 import AlarmRegisterPage from '../pages/AlarmRegisterPage.jsx';
-import { ipcRenderer } from 'electron';
+import Login from '../pages/Login.jsx';
+import Register from '../pages/Register.jsx';
+
+if (!window.location.hash || window.location.hash === '#/') {
+  window.location.hash = '#/login';
+}
 
 export default function App() {
   const [videoUrl, setVideoUrl] = useState('');
-  const [isVideoPlayed, setIsVideoPlayed] = useState(false);
   const [campaignId, setCampaignId] = useState('');
   const [content, setContent] = useState('');
   const [campaignUrl, serCampaignUrl] = useState('');
@@ -16,20 +22,31 @@ export default function App() {
       setCampaignId(campaignId);
       setContent(content);
       serCampaignUrl(campaignUrl);
-      setIsVideoPlayed(true);
+      window.location.hash = '#/popup';
     });
   }, []);
 
   return (
-    <>
-      {isVideoPlayed
-        ? <VideoPopUp
-          videoUrl={videoUrl}
-          campaignId={campaignId}
-          content={content}
-          campaignUrl={campaignUrl}
-        />
-        : <AlarmRegisterPage />}
-    </>
+    <Router>
+      <Switch>
+        <Route path="/login">
+          <Login />
+        </Route>
+        <Route path="/register">
+          <Register />
+        </Route>
+        <Route path="/alarmRegister">
+        <AlarmRegisterPage />
+        </Route>
+        <Route path="/popup">
+          <VideoPopUp
+            videoUrl={videoUrl}
+            campaignId={campaignId}
+            content={content}
+            campaignUrl={campaignUrl}
+          />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
