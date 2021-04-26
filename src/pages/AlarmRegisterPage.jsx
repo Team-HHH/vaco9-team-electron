@@ -7,6 +7,7 @@ import { color } from '../css/color';
 
 const Container = styled.div`
   display: flex;
+  height: 100vh;
 `;
 
 const LeftSection = styled.div`
@@ -17,6 +18,9 @@ const LeftSection = styled.div`
 
 const RightSection = styled.div`
   width: 70vw;
+  display: flex;
+  flex-direction: column;
+  background-color: ${color.BACK};
 `;
 
 export default function AlarmRegisterPage() {

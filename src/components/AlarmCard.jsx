@@ -31,7 +31,6 @@ const DeleteButton = styled.button`
   height: 20px;
   align-self: right;
   border: none;
-  border-radius: 3px;
   opacity: 0.3;
   &:hover {
     opacity: 1;
