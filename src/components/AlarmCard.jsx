@@ -1,20 +1,33 @@
 import React from 'react';
 import styled from 'styled-components';
+import { color } from '../css/color';
 
 const Card = styled.div`
-  background-color: #e0f3ff;
+  background-color: ${color.WHITE};
   height: 60px;
   display: flex;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 `;
 
 const Time = styled.span`
   margin: auto auto;
   width: 100%;
   text-align: center;
+  opacity: 0.6;
+  font-size: 24px;
+  color: ${color.MAIN_FONT}
 `;
 
 const DeleteButton = styled.button`
   margin: 0 0 auto auto;
+  border: none;
+  opacity: 0.3;
+  &:hover {
+    opacity: 1;
+  }
 `;
 
 const ToggleWrapper = styled.label`
@@ -40,10 +53,10 @@ const Toggle = styled.input`
   z-index: -1;
   &:checked {
       ~ i {
-          background: #d1c9c7;
+          background: ${color.SUB};
           &:after {
               left: 50%;
-              background: #ff5f2e;
+              background: ${color.HOVER};
           }
       }
   }
@@ -57,7 +70,7 @@ const ToggleButton = styled.i`
   position: relative;
   cursor: pointer;
   user-select: none;
-  background: #c9d6de;
+  background: ${color.LIGHT};
   border-radius: 10px;
   padding: 2px;
   transition: all 0.4s ease;
@@ -73,7 +86,7 @@ const ToggleButton = styled.i`
   &:after {
       left: 0;
       border-radius: 50%;
-      background: #f0f5f9;
+      background: ${color.DARK};
       transition: all 0.2s ease;
   }
 

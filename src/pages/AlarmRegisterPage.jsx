@@ -3,18 +3,19 @@ import { ipcRenderer } from 'electron';
 import styled from 'styled-components';
 import AlarmNavbar from '../components/AlarmNavbar.jsx';
 import AlarmRegister from '../components/AlarmRegister.jsx';
+import { color } from '../css/color';
 
 const Container = styled.div`
   display: flex;
 `;
 
 const LeftSection = styled.div`
-  width: 30%;
-  background-color: #F5F5F5;
+  width: 200px;
+  background-color: ${color.MAIN};
 `;
 
 const RightSection = styled.div`
-  width: 70%;
+  width: 100vw - 200px;
 `;
 
 export default function AlarmRegisterPage() {
