@@ -33,7 +33,7 @@ export default function Login() {
     try {
       const response = await login(data);
       window.location.hash = '#/alarmRegister';
-      // ipcRenderer.send('storeUserData', data);
+      ipcRenderer.send('storeUserData', data);
     } catch (error) {
       window.location.hash = '#/login';
     }

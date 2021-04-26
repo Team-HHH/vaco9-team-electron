@@ -5,9 +5,10 @@ import VideoPopUp from '../components/VideoPopup.jsx';
 import AlarmRegisterPage from '../pages/AlarmRegisterPage.jsx';
 import Login from '../pages/Login.jsx';
 import Register from '../pages/Register.jsx';
+import Loading from '../pages/Loading.jsx';
 
 if (!window.location.hash || window.location.hash === '#/') {
-  window.location.hash = '#/login';
+  window.location.hash = '#/loading';
 }
 
 export default function App() {
@@ -15,6 +16,7 @@ export default function App() {
   const [campaignId, setCampaignId] = useState('');
   const [content, setContent] = useState('');
   const [campaignUrl, serCampaignUrl] = useState('');
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     ipcRenderer.on('playVideo', (event, campaignId, content, url, campaignUrl) => {
@@ -29,6 +31,9 @@ export default function App() {
   return (
     <Router>
       <Switch>
+        <Route path="/loading">
+          <Loading setUser={setUser} />
+        </Route>
         <Route path="/login">
           <Login />
         </Route>
@@ -36,7 +41,7 @@ export default function App() {
           <Register />
         </Route>
         <Route path="/alarmRegister">
-        <AlarmRegisterPage />
+          <AlarmRegisterPage />
         </Route>
         <Route path="/popup">
           <VideoPopUp
