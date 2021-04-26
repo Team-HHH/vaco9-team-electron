@@ -82,8 +82,11 @@
     "axios": "^0.21.1",
     "date-fns": "^2.21.1",
     "electron-squirrel-startup": "^1.0.0",
+    "keytar": "^7.6.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-hook-form": "^7.3.1",
+    "react-router-dom": "^5.2.0",
     "react-youtube": "^7.13.1",
     "styled-components": "^5.2.3"
   }

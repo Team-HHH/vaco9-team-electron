@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain, Notification } = require('electron');
 const { parse, isFuture, differenceInMilliseconds } = require('date-fns');
+const keytar = require('keytar');
 const { getVideos, getAds, sendStats } = require('./apis');
 const VideoStore = require('./store/videos');
 const AlarmStore = require('./store/alarms');
@@ -10,7 +11,7 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
-const createWindow = () => {
+const createWindow = async () => {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
@@ -21,6 +22,17 @@ const createWindow = () => {
   });
 
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
+
+  const prevLoginData = await keytar.findCredentials('stretchingAlarm');
+
+  mainWindow.webContents.once('dom-ready', () => {
+    if (prevLoginData.length !== 0) {
+      mainWindow.webContents.send('loginDataExist', prevLoginData[0]);
+    } else {
+      mainWindow.webContents.send('loginDataDoesNotExist', 'no');
+    }
+  });
+
   mainWindow.webContents.openDevTools();
 };
 
@@ -155,4 +167,12 @@ ipcMain.on('toggleAlarm', (event, time) => {
   } else if (timerIds[time].status === 'pause') {
     prepareAlarm(alarms.get().find(alarm => alarm.time === time));
   }
+});
+
+ipcMain.on('storeUserData', async (event, data) => {
+  await keytar.setPassword('stretchingAlarm', data.email, data.password);
+});
+
+ipcMain.on('deleteUserData', async (event, account) => {
+  await keytar.deletePassword('stretchingAlarm', account);
 });
