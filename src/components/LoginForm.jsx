@@ -10,15 +10,43 @@ const LoginWrapper = styled.div`
   justify-content: center;
   height: 100%;
   width: 100%;
-  background-color: ${color.WHITE};
+  background-color: ${color.SUB};
 `;
 
 const FormWrapper = styled.div`
-  height: 50vh;
-  width: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 420px;
+  width: 400px;
+  background-color: ${color.WHITE};
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 `;
 
-const Form = styled.form``;
+const AuthHeaderWrapper = styled.div`
+  display: flex;
+  position: relative;
+  top: -40px;
+  width: 40%;
+  justify-content: space-between;
+`;
+
+const LinkWrapper = styled.div`
+  opacity: 0.3;
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px;
+`;
 
 const Label = styled.label`
   color: ${color.BOLD};
@@ -28,23 +56,25 @@ const Label = styled.label`
 const Input = styled.input`
   display: block;
 	border: none;
-	padding: 8px 15px;
-	margin: 0 0 20px 0;
-	width: 80%;
-  border-radius: 8px;
+	padding: 10px 8px;
+	margin: 0 0 10px 0;
+	width: 240px;
+  border-radius: 3px;
   background-color: ${color.LIGHT};
 `;
 
 const Button = styled.input`
+  position: relative;
+  bottom: -58px;
   margin: 20px 0;
   border: none;
   border-radius: 18px;
-  padding: 10px 15px;
-  width: 40%;
+  padding: 10px 8px;
+  width: 50%;
+  text-align: center;
   background-color: ${color.SUB};
   &:hover {
     background-color: ${color.MAIN};
-    color: black;
   }
   &:focus {
     outline: none;
@@ -59,7 +89,12 @@ export default function Login({ onLoginSubmit }) {
   return (
     <LoginWrapper>
       <FormWrapper>
-        <h1>로그인</h1>
+        <AuthHeaderWrapper>
+          <span>로그인</span>
+          <LinkWrapper>
+            <Link to="/register">회원가입</Link>
+          </LinkWrapper>
+        </AuthHeaderWrapper>
         <Form onSubmit={handleSubmit(onLoginSubmit)}>
           <Label>이메일 주소</Label>
           <Input
@@ -78,10 +113,6 @@ export default function Login({ onLoginSubmit }) {
             value="로그인"
           />
         </Form>
-        <div>
-          <span>아직 계정이 없으신가요?</span>
-          <Link to="/register">회원가입</Link>
-        </div>
       </FormWrapper>
     </LoginWrapper>
   );

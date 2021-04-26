@@ -10,14 +10,42 @@ const RegisterWrapper = styled.div`
   justify-content: center;
   height: 100%;
   width: 100%;
-  background-color: ${color.WHITE};
+  background-color: ${color.SUB};
 `;
 const FormWrapper = styled.div`
-  height: 70vh;
-  width: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 420px;
+  width: 400px;
+  background-color: ${color.WHITE};
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 `;
 
-const Form = styled.form``;
+const AuthHeaderWrapper = styled.div`
+  display: flex;
+  position: relative;
+  top: 18px;
+  width: 40%;
+  justify-content: space-between;
+`;
+
+const LinkWrapper = styled.div`
+  opacity: 0.3;
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+`;
 
 const Label = styled.label`
   color: ${color.BOLD};
@@ -25,12 +53,12 @@ const Label = styled.label`
 `;
 const Input = styled.input`
   display: block;
-  border: none;
-	padding: 8px 15px;
-  margin: 0 0 10px 0;
-	width: 100%;
-  border-radius: 8px;
-  background-color: #eee;
+	border: none;
+	padding: 8px 8px;
+	margin: 0 0 8px 0;
+	width: 240px;
+  border-radius: 3px;
+  background-color: ${color.LIGHT};
 `;
 const Button = styled.input`
    margin: 20px 0;
@@ -61,7 +89,12 @@ export default function Register({ onRegisterSubmit }) {
   return (
     <RegisterWrapper>
       <FormWrapper>
-        <h1>회원가입</h1>
+        <AuthHeaderWrapper>
+          <LinkWrapper>
+            <Link to="/login">로그인</Link>
+          </LinkWrapper>
+          <span>회원가입</span>
+        </AuthHeaderWrapper>
         <Form
           name="form"
           onSubmit={handleSubmit(onRegisterSubmit)}
@@ -101,10 +134,6 @@ export default function Register({ onRegisterSubmit }) {
             value="회원가입"
           />
         </Form>
-        <div>
-          <span>계정이 있으신가요?</span>
-          <Link to="/login">로그인</Link>
-        </div>
       </FormWrapper>
     </RegisterWrapper>
   );

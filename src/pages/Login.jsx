@@ -3,12 +3,8 @@ import styled from 'styled-components';
 import { ipcRenderer } from 'electron';
 import LoginForm from '../components/LoginForm.jsx';
 import { login } from '../apis/index.js';
-import { color } from '../css/color';
 
 const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
   height: 100vh;
   width: 100vw;
 `;
