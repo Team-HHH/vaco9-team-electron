@@ -21,3 +21,17 @@ exports.sendStats = async function (campaignId, type) {
     type
   });
 }
+
+exports.login = async function (data) {
+  const url = 'http://localhost:5000/auth/login/user';
+  const response = await axios.post(url, data);
+
+  return response;
+}
+
+exports.register = async function (data) {
+  const url = 'http://localhost:5000/auth/register/user'
+  const response = await axios.post(url, data);
+
+  return response;
+}

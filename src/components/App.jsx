@@ -1,32 +1,57 @@
 import React, { useEffect, useState } from 'react';
+import { HashRouter as Router, Switch, Route } from 'react-router-dom';
+import { ipcRenderer } from 'electron';
 import VideoPopUp from '../components/VideoPopup.jsx';
 import AlarmRegisterPage from '../pages/AlarmRegisterPage.jsx';
-import { ipcRenderer } from 'electron';
+import Login from '../pages/Login.jsx';
+import Register from '../pages/Register.jsx';
+import Loading from '../pages/Loading.jsx';
+
+if (!window.location.hash || window.location.hash === '#/') {
+  window.location.hash = '#/loading';
+}
 
 export default function App() {
   const [videoUrl, setVideoUrl] = useState('');
-  const [isVideoPlayed, setIsVideoPlayed] = useState(false);
   const [campaignId, setCampaignId] = useState('');
   const [content, setContent] = useState('');
+  const [campaignUrl, serCampaignUrl] = useState('');
+  const [user, setUser] = useState({});
 
   useEffect(() => {
-    ipcRenderer.on('playVideo', (event, campaignId, content, url) => {
+    ipcRenderer.on('playVideo', (event, campaignId, content, url, campaignUrl) => {
       setVideoUrl(url);
       setCampaignId(campaignId);
       setContent(content);
-      setIsVideoPlayed(true);
+      serCampaignUrl(campaignUrl);
+      window.location.hash = '#/popup';
     });
   }, []);
 
   return (
-    <>
-      {isVideoPlayed
-        ? <VideoPopUp
-          videoUrl={videoUrl}
-          campaignId={campaignId}
-          content={content}
-        />
-        : <AlarmRegisterPage />}
-    </>
+    <Router>
+      <Switch>
+        <Route path="/loading">
+          <Loading setUser={setUser} />
+        </Route>
+        <Route path="/login">
+          <Login />
+        </Route>
+        <Route path="/register">
+          <Register />
+        </Route>
+        <Route path="/alarmRegister">
+          <AlarmRegisterPage />
+        </Route>
+        <Route path="/popup">
+          <VideoPopUp
+            videoUrl={videoUrl}
+            campaignId={campaignId}
+            content={content}
+            campaignUrl={campaignUrl}
+          />
+        </Route>
+      </Switch>
+    </Router>
   );
 }

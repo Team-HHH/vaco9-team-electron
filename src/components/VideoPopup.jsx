@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import YouTube from "react-youtube";
 import styled, { css } from "styled-components";
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, shell } from 'electron';
 import { sendStats } from '../apis/index';
 
 const PopupWrapper = styled.div`
@@ -68,7 +68,7 @@ const LoadingWrapper = styled.div`
   }
 `;
 
-export default function VideoPopup({ videoUrl, campaignId, content }) {
+export default function VideoPopup({ videoUrl, campaignId, content, campaignUrl }) {
   const [test, setTest] = useState(false);
 
   setTimeout(() => {
@@ -99,6 +99,7 @@ export default function VideoPopup({ videoUrl, campaignId, content }) {
     event.preventDefault();
 
     sendStats(campaignId, 'click');
+    shell.openExternal(campaignUrl);
   }
 
   return (
@@ -116,12 +117,10 @@ export default function VideoPopup({ videoUrl, campaignId, content }) {
         />
       </VideoWrapper>
       <BannerWrapper>
-        <a href="https://www.naver.com/" target="_blank">
-          <Banner
-            src={content}
-            onClick={handleClickBanner}
-          />
-        </a>
+        <Banner
+          src={content}
+          onClick={handleClickBanner}
+        />
       </BannerWrapper>
     </PopupWrapper>
   );
