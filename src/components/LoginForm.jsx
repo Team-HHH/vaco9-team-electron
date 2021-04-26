@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { color } from '../css/color';
 
 const LoginWrapper = styled.div`
   display: flex;
@@ -9,6 +10,7 @@ const LoginWrapper = styled.div`
   justify-content: center;
   height: 100%;
   width: 100%;
+  background-color: ${color.WHITE};
 `;
 
 const FormWrapper = styled.div`
@@ -16,7 +18,7 @@ const FormWrapper = styled.div`
 `;
 
 const Label = styled.label`
-  color: darkblue;
+  color: ${color.BOLD};
   margin: 3px;
 `;
 
@@ -27,6 +29,7 @@ const Input = styled.input`
 	margin: 0 0 20px 0;
 	width: 80%;
   border-radius: 8px;
+  background-color: ${color.LIGHT};
 `;
 
 const Button = styled.input`
@@ -35,9 +38,9 @@ const Button = styled.input`
   border-radius: 18px;
   padding: 10px 15px;
   width: 40%;
-  background-color: yellow;
+  background-color: ${color.SUB};
   &:hover {
-    background-color: lightyellow;
+    background-color: ${color.MAIN};
     color: black;
   }
   &:focus {
@@ -53,15 +56,15 @@ export default function Login({ onLoginSubmit }) {
   return (
     <LoginWrapper>
       <FormWrapper>
-        <h1>Log in to your account</h1>
+        <h1>로그인</h1>
         <form onSubmit={handleSubmit(onLoginSubmit)}>
-          <Label>Email Address</Label>
+          <Label>이메일 주소</Label>
           <Input
             type="email"
             name="email"
             {...register('email')}
           />
-          <Label>Password</Label>
+          <Label>패스워드</Label>
           <Input
             type="password"
             name="password"
@@ -69,12 +72,12 @@ export default function Login({ onLoginSubmit }) {
           />
           <Button
             type="submit"
-            value="Login"
+            value="로그인"
           />
         </form>
         <div>
-          <span>Dont have account?</span>
-          <Link to="/register">Sign up</Link>
+          <span>아직 계정이 없으신가요?</span>
+          <Link to="/register">회원가입</Link>
         </div>
       </FormWrapper>
     </LoginWrapper>

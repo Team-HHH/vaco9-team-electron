@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { ipcRenderer } from 'electron';
 import LoginForm from '../components/LoginForm.jsx';
 import { login } from '../apis/index.js';
+import { color } from '../css/color';
 
 const Container = styled.div`
   display: flex;
@@ -10,6 +11,7 @@ const Container = styled.div`
   justify-content: center;
   height: 100vh;
   width: 100vw;
+  background-color: ${color.SUB}
 `;
 
 const FormWrapper = styled.div`
@@ -42,10 +44,10 @@ export default function Login() {
   return (
     <Container>
       <FormWrapper>
-        <LoginForm onLoginSubmit={handleLoginSubmit}/>
+        <LoginForm onLoginSubmit={handleLoginSubmit} />
       </FormWrapper>
       <ImageWrapper>
-        <Img src="" alt=""/>
+        <Img src="" alt="" />
       </ImageWrapper>
     </Container>
   );

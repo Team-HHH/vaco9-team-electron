@@ -1,9 +1,11 @@
 export const color = Object.freeze({
-  MAIN: '#ffde89',
-  SUB: '#fff3d6',
+  MAIN: '#fff3d6',
+  SUB: '#ffde89',
   HOVER: '#ffc945',
-  BACK: '#FAF8EF',
-  LIGHT: '#cecece',
-  DARK: '#949494',
+  BACKGROUND: '#FAF8EF',
+  BOLD: '#594730',
+  OUTLINE: '#ACACAC',
+  LIGHT: '#efefef',
+  DARK: '#e2e2e2',
   WHITE: 'white',
 });
