@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import RegisterForm from '../components/RegisterForm.jsx';
 import { register } from '../apis/index.js';
+import { color } from '../css/color';
 
 const Container = styled.div`
   display: flex;
@@ -9,18 +10,6 @@ const Container = styled.div`
   justify-content: center;
   height: 100vh;
   width: 100vw;
-`;
-
-const FormWrapper = styled.div`
-  display: flex;
-  width: 30%;
-  height: 100%;
-`;
-
-const ImageWrapper = styled.div`
-  display: flex;
-  width: 70%;
-  height: 100%;
 `;
 
 export default function Register() {
@@ -35,10 +24,7 @@ export default function Register() {
 
   return (
     <Container>
-      <FormWrapper>
-        <RegisterForm onRegisterSubmit={handleLoginSubmit}/>
-      </FormWrapper>
-      <ImageWrapper></ImageWrapper>
+      <RegisterForm onRegisterSubmit={handleLoginSubmit} />
     </Container>
   );
 }

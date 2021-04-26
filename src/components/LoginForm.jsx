@@ -14,8 +14,11 @@ const LoginWrapper = styled.div`
 `;
 
 const FormWrapper = styled.div`
-  height: 60vh;
+  height: 50vh;
+  width: 30%;
 `;
+
+const Form = styled.form``;
 
 const Label = styled.label`
   color: ${color.BOLD};
@@ -57,7 +60,7 @@ export default function Login({ onLoginSubmit }) {
     <LoginWrapper>
       <FormWrapper>
         <h1>로그인</h1>
-        <form onSubmit={handleSubmit(onLoginSubmit)}>
+        <Form onSubmit={handleSubmit(onLoginSubmit)}>
           <Label>이메일 주소</Label>
           <Input
             type="email"
@@ -74,7 +77,7 @@ export default function Login({ onLoginSubmit }) {
             type="submit"
             value="로그인"
           />
-        </form>
+        </Form>
         <div>
           <span>아직 계정이 없으신가요?</span>
           <Link to="/register">회원가입</Link>

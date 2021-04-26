@@ -2,18 +2,25 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { color } from '../css/color';
 
 const RegisterWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 100%;
+  width: 100%;
+  background-color: ${color.WHITE};
 `;
 const FormWrapper = styled.div`
-  height: 80vh;
+  height: 70vh;
+  width: 30%;
 `;
+
+const Form = styled.form``;
+
 const Label = styled.label`
-  color: yellowgreen;
+  color: ${color.BOLD};
   margin: 3px;
 `;
 const Input = styled.input`
@@ -21,19 +28,19 @@ const Input = styled.input`
   border: none;
 	padding: 8px 15px;
   margin: 0 0 10px 0;
-	width: 80%;
+	width: 100%;
   border-radius: 8px;
   background-color: #eee;
 `;
 const Button = styled.input`
-  margin: 20px 0;
+   margin: 20px 0;
   border: none;
   border-radius: 18px;
   padding: 10px 15px;
-  width: 40%;
-  background-color: yellow;
+  width: 50%;
+  background-color: ${color.SUB};
   &:hover {
-    background-color: yellowgreen;
+    background-color: ${color.MAIN};
     color: black;
   }
   &:focus {
@@ -54,26 +61,26 @@ export default function Register({ onRegisterSubmit }) {
   return (
     <RegisterWrapper>
       <FormWrapper>
-        <h1>Create your account</h1>
-        <form
+        <h1>회원가입</h1>
+        <Form
           name="form"
           onSubmit={handleSubmit(onRegisterSubmit)}
         >
-          <Label>Email</Label>
+          <Label>이메일 주소</Label>
           <Input
             type="email"
             name="email"
             {...register('email')}
             required
           />
-          <Label>Name</Label>
+          <Label>이름</Label>
           <Input
             type="text"
             name="name"
             {...register('name')}
             required
           />
-          <Label>Password</Label>
+          <Label>패스워드</Label>
           <Input
             type="password"
             name="password"
@@ -81,7 +88,7 @@ export default function Register({ onRegisterSubmit }) {
             minLength="8"
             required
           />
-          <Label>Confirm Password</Label>
+          <Label>패스워드 확인</Label>
           <Input
             type="password"
             name="passwordConfirm"
@@ -91,12 +98,12 @@ export default function Register({ onRegisterSubmit }) {
           />
           <Button
             type="submit"
-            value="Register"
+            value="회원가입"
           />
-        </form>
+        </Form>
         <div>
-          <span>Have account?</span>
-          <Link to="/login">Login</Link>
+          <span>계정이 있으신가요?</span>
+          <Link to="/login">로그인</Link>
         </div>
       </FormWrapper>
     </RegisterWrapper>
