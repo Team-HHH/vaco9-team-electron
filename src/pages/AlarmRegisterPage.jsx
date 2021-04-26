@@ -10,12 +10,13 @@ const Container = styled.div`
 `;
 
 const LeftSection = styled.div`
-  width: 200px;
+  width: 30vw;
+  min-width: 120px;
   background-color: ${color.MAIN};
 `;
 
 const RightSection = styled.div`
-  width: 100vw - 200px;
+  width: 70vw;
 `;
 
 export default function AlarmRegisterPage() {

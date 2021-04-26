@@ -1,11 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { color } from '../css/color';
+import { formatTime } from '../util/index';
 
 const Card = styled.div`
   background-color: ${color.WHITE};
   height: 60px;
   display: flex;
+  justify-content: center;
   margin: 10px;
   padding: 10px;
   border-radius: 5px;
@@ -13,17 +15,23 @@ const Card = styled.div`
 `;
 
 const Time = styled.span`
-  margin: auto auto;
-  width: 100%;
+  margin: auto 0;
+  width: 30%;
   text-align: center;
   opacity: 0.6;
   font-size: 24px;
   color: ${color.MAIN_FONT}
 `;
 
+const DeleteButtonWrapper = styled.div`
+  display: flex;
+`;
+
 const DeleteButton = styled.button`
-  margin: 0 0 auto auto;
+  height: 20px;
+  align-self: right;
   border: none;
+  border-radius: 3px;
   opacity: 0.3;
   &:hover {
     opacity: 1;
@@ -32,6 +40,8 @@ const DeleteButton = styled.button`
 
 const ToggleWrapper = styled.label`
   display: flex;
+  justify-content: center;
+  width: 30%;
   text-transform: uppercase;
   font-size: 10px;
   font-weight: 600;
@@ -50,6 +60,7 @@ const Toggle = styled.input`
   position: absolute;
   width: 1px;
   height: 1px;
+  align-self: center;
   z-index: -1;
   &:checked {
       ~ i {
@@ -96,9 +107,11 @@ const ToggleButton = styled.i`
 `;
 
 export default function AlarmCard({ time, onDeleteButtonClick, onToggleClick }) {
+  const { period, hhmm } = formatTime(time);
   return (
     <Card>
-      <Time>{time}</Time>
+      <Time>{period}</Time>
+      <Time>{hhmm}</Time>
       <ToggleWrapper>
         <Toggle
           type="checkbox"
@@ -108,10 +121,12 @@ export default function AlarmCard({ time, onDeleteButtonClick, onToggleClick }) 
         />
         <ToggleButton></ToggleButton>
       </ToggleWrapper>
-      <DeleteButton
-        id={time}
-        onClick={onDeleteButtonClick}
-      >x</DeleteButton>
+      <DeleteButtonWrapper>
+        <DeleteButton
+          id={time}
+          onClick={onDeleteButtonClick}
+        >x</DeleteButton>
+      </DeleteButtonWrapper>
     </Card>
   );
 }
