@@ -11,8 +11,7 @@ const RegisterContainer = styled.div`
 const FormWrapper = styled.div`
   width: 90%;
   align-self: center;
-  border: 1px solid ${color.OUTLINE};
-  padding: 10px 10px;
+  padding: 20px 10px;
   background-color: ${color.WHITE};
 `;
 
@@ -24,8 +23,7 @@ const AlarmRegisterForm = styled.form`
 `;
 
 const Title = styled.h2`
-  border: 1px solid green;
-  margin-top: 20px;
+  margin-top: 25px;
   padding: 10px 10px;
   width: 90%;
   align-self: center;
@@ -36,12 +34,11 @@ const SelectTitle = styled.label`
   font-size: 20px;
 `;
 
-const Time = styled.input`
+const Input = styled.input`
   margin: 10px 0;
-  border: 1px solid ${color.DARK};
 	padding: 10px 15px;
 	width: 70%;
-  border: 3px solid ${color.HOVER};
+  border: 1px solid ${color.LIGHT};
   &:focus {
     outline: none;
   }
@@ -49,10 +46,9 @@ const Time = styled.input`
 
 const BodyPart = styled.select`
   margin: 10px 0;
-  border: 1px solid ${color.OUTLINE};
 	padding: 10px 15px;
-	width: 70%;
-  border: 3px solid ${color.HOVER};
+	width: 76%;
+  border: 1px solid ${color.LIGHT};
   &:focus {
     outline: none;
   }
@@ -65,18 +61,13 @@ const SubmitButtonWrapper = styled.div`
 `;
 
 const SubmitButton = styled.input`
-  margin: 20px 0;
+  margin-top: 30px;
+  padding: 10px 30px;
+  border-radius: 5px;
   border: none;
-  border-radius: 18px;
-  padding: 10px 15px;
-  width: 120px;
-  background-color: ${color.SUB};
+  background-color: ${color.MAIN};
   &:hover {
-    background-color: ${color.HOVER};
-    color: black;
-  }
-  &:focus {
-    outline: none;
+    background-color: ${color.SUB}
   }
 `;
 
@@ -96,7 +87,7 @@ export default function AlarmRegister({ onRegisterAlarmSubmit }) {
           >
 
             <SelectTitle>스트레칭 알람 시간</SelectTitle>
-            <Time
+            <Input
               type="time"
               name="time"
               onChange={(e) => { setTime(e.target.value) }}
@@ -114,8 +105,7 @@ export default function AlarmRegister({ onRegisterAlarmSubmit }) {
               <option value={'neck'}>목</option>
             </BodyPart>
             <SelectTitle htmlFor="customVideo">커스텀 비디오 설정</SelectTitle>
-            <input type="text" name="customVideo" id="customVideo" onChange={(e) => setCustomVideo(e.target.value)} />
-
+            <Input type="text" name="customVideo" id="customVideo" onChange={(e) => setCustomVideo(e.target.value)} />
             <SubmitButtonWrapper>
               <SubmitButton type="submit" value='저장하기' />
             </SubmitButtonWrapper>
