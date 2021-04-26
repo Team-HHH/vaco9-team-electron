@@ -1,5 +1,7 @@
 import React from 'react';
 import AlarmCard from './AlarmCard.jsx';
+import styled from 'styled-components';
+import { color } from '../css/color';
 
 export default function AlarmNavbar({ alarms, onDeleteButtonClick, onToggleClick }) {
   const handleDeleteButtonClick = (event) => onDeleteButtonClick(event.target.id);
@@ -12,8 +14,12 @@ export default function AlarmNavbar({ alarms, onDeleteButtonClick, onToggleClick
     return a1 - b1 || a2 - b2;
   });
 
+
+  const AlarmNavbarContainer = styled.div`
+  `;
+
   return (
-    <>
+    <AlarmNavbarContainer>
       {sortedAlarms.map(alarm => (
         <AlarmCard
           key={alarm.time}
@@ -22,6 +28,6 @@ export default function AlarmNavbar({ alarms, onDeleteButtonClick, onToggleClick
           onToggleClick={handleToggleClick}
         />
       ))}
-    </>
+    </AlarmNavbarContainer>
   );
 }
