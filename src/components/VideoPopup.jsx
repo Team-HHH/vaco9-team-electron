@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import YouTube from "react-youtube";
 import styled, { css } from "styled-components";
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, shell } from 'electron';
 import { sendStats } from '../apis/index';
 
 const PopupWrapper = styled.div`
@@ -99,6 +99,7 @@ export default function VideoPopup({ videoUrl, campaignId, content, campaignUrl 
     event.preventDefault();
 
     sendStats(campaignId, 'click');
+    shell.openExternal(campaignUrl);
   }
 
   return (
@@ -116,12 +117,10 @@ export default function VideoPopup({ videoUrl, campaignId, content, campaignUrl 
         />
       </VideoWrapper>
       <BannerWrapper>
-        <a href={campaignUrl} target="_blank">
-          <Banner
-            src={content}
-            onClick={handleClickBanner}
-          />
-        </a>
+        <Banner
+          src={content}
+          onClick={handleClickBanner}
+        />
       </BannerWrapper>
     </PopupWrapper>
   );
