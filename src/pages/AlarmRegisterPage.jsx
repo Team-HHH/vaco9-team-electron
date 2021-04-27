@@ -42,8 +42,8 @@ export default function AlarmRegisterPage() {
     ipcRenderer.send('toggleAlarm', time);
   }
 
-  function handleRegisterAlarmSubmit(event, time, bodyPart, customVideo) {
-    event.preventDefault();
+  function handleRegisterAlarmSubmit(data) {
+    const { time, bodyPart, customVideo } = data;
 
     if (alarms.some(alarm => alarm.time === time)) {
       return;

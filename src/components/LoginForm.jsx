@@ -1,7 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import { color } from '../css/color';
 
 const LoginWrapper = styled.div`
@@ -86,6 +86,7 @@ export default function Login({ onLoginSubmit }) {
     register,
     handleSubmit,
   } = useForm();
+
   return (
     <LoginWrapper>
       <FormWrapper>
