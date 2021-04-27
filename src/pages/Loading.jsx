@@ -1,27 +1,24 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { ipcRenderer } from 'electron';
-import { login } from '../apis/index';
+import { useDispatch } from 'react-redux';
+import { fetchLogin } from '../reducers/login';
 
 const Container = styled.div`
   display: flex;
 `;
 
 export default function Loading({ setUser }) {
+  const dispatch = useDispatch();
+
   useEffect(() => {
     ipcRenderer.on('loginDataExist', async (event, data) => {
-      try {
-        const response = await login({
-          email: data.account,
-          password: data.password,
-        });
+      const userData = {
+        email: data.account,
+        password: data.password,
+      };
 
-        setUser(response.data);
-
-        window.location.hash = '#/alarmRegister';
-      } catch (error) {
-        ipcRenderer.send('deleteUserData', data.account);
-      }
+      dispatch(fetchLogin(userData));
     });
 
     ipcRenderer.on('loginDataDoesNotExist', (event, data) => {
@@ -33,5 +30,5 @@ export default function Loading({ setUser }) {
     <Container>
       Loading...
     </Container>
-  )
+  );
 }

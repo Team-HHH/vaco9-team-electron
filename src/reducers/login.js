@@ -1,4 +1,5 @@
 import { login } from '../apis/index';
+import { ipcRenderer } from 'electron';
 
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 const LOGIN_FAILURE = 'LOGIN_FAILURE';
@@ -16,9 +17,11 @@ const loginFail = (message) => ({
 export const fetchLogin = (loginInput) => async (dispatch) => {
   try {
     const response = await login(loginInput);
-    const { username } = response.data;
+    console.log(response.data);
+    const { name } = response.data;
 
-    dispatch(loginSuccess(username));
+    dispatch(loginSuccess(name));
+    ipcRenderer.send('storeUserData', loginInput);
     window.location.hash = '#/alarmRegister';
   } catch (error) {
     dispatch(loginFail(error.message));
@@ -28,7 +31,7 @@ export const fetchLogin = (loginInput) => async (dispatch) => {
 const initialState = {
   isLoading: false,
   isLoggedIn: false,
-  username: null,
+  name: null,
   isError: false,
   errorMessage: '',
 }
@@ -39,7 +42,7 @@ export default function loginReducer(state = initialState, action) {
       return {
         ...state,
         isLoggedIn: true,
-        username: action.payload,
+        name: action.payload,
       };
     case LOGIN_FAILURE:
       return {
