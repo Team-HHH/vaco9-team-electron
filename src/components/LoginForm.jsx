@@ -63,6 +63,10 @@ const Input = styled.input`
   background-color: ${color.LIGHT};
 `;
 
+const Message = styled.div`
+  height: 0;
+`;
+
 const Button = styled.input`
   position: relative;
   bottom: -58px;
@@ -81,7 +85,7 @@ const Button = styled.input`
   }
 `;
 
-export default function Login({ onLoginSubmit }) {
+export default function Login({ isError, errorMessage, onLoginSubmit }) {
   const {
     register,
     handleSubmit,
@@ -111,6 +115,7 @@ export default function Login({ onLoginSubmit }) {
             {...register('password')}
             required
           />
+          <Message>{errorMessage}</Message>
           <Button
             type="submit"
             value="로그인"

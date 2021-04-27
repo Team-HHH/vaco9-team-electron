@@ -1,4 +1,4 @@
-export const sortAlarms = (alarms) => {
+export function sortAlarms(alarms) {
   return alarms.sort((a, b) => {
     const [a1, a2] = a.time.split(':').map(Number);
     const [b1, b2] = b.time.split(':').map(Number);
@@ -7,7 +7,7 @@ export const sortAlarms = (alarms) => {
   });
 }
 
-export const formatTime = (time) => {
+export function formatTime(time) {
   let [hh, mm] = time.split(':');
   const period = Number(hh) < 12 ? '오전' : '오후';
 
