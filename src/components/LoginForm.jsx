@@ -101,12 +101,14 @@ export default function Login({ onLoginSubmit }) {
             type="email"
             name="email"
             {...register('email')}
+            required
           />
           <Label>패스워드</Label>
           <Input
             type="password"
             name="password"
             {...register('password')}
+            required
           />
           <Button
             type="submit"
