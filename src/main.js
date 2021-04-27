@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const { app, BrowserWindow, ipcMain, Notification } = require('electron');
 const { parse, isFuture, differenceInMilliseconds } = require('date-fns');
 const keytar = require('keytar');

@@ -16,21 +16,21 @@ const LoginWrapper = styled.div`
 const FormWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   height: 420px;
   width: 400px;
-  background-color: ${color.WHITE};
   border-radius: 5px;
+  background-color: ${color.WHITE};
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 `;
 
 const AuthHeaderWrapper = styled.div`
   display: flex;
   position: relative;
+  justify-content: space-between;
   top: -40px;
   width: 40%;
-  justify-content: space-between;
 `;
 
 const LinkWrapper = styled.div`
@@ -43,8 +43,8 @@ const LinkWrapper = styled.div`
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding: 30px;
 `;
 
@@ -55,10 +55,10 @@ const Label = styled.label`
 
 const Input = styled.input`
   display: block;
-	border: none;
+  width: 240px;
 	padding: 10px 8px;
 	margin: 0 0 10px 0;
-	width: 240px;
+  border: none;
   border-radius: 3px;
   background-color: ${color.LIGHT};
 `;
@@ -66,12 +66,12 @@ const Input = styled.input`
 const Button = styled.input`
   position: relative;
   bottom: -58px;
+  text-align: center;
+  width: 50%;
   margin: 20px 0;
+  padding: 10px 8px;
   border: none;
   border-radius: 18px;
-  padding: 10px 8px;
-  width: 50%;
-  text-align: center;
   background-color: ${color.SUB};
   &:hover {
     background-color: ${color.MAIN};

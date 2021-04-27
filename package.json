@@ -81,6 +81,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "date-fns": "^2.21.1",
+    "dotenv": "^8.2.0",
     "electron-squirrel-startup": "^1.0.0",
     "keytar": "^7.6.0",
     "react": "^17.0.2",
