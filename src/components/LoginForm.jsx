@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { color } from '../css/color';
+import Spinner from '../components/Spinner.jsx';
 
 const LoginWrapper = styled.div`
   display: flex;
@@ -65,6 +66,10 @@ const Input = styled.input`
 
 const Message = styled.div`
   height: 0;
+  position: relative;
+  height: 0;
+  top: 50px;
+  left: 50px;
 `;
 
 const Button = styled.input`
@@ -85,43 +90,52 @@ const Button = styled.input`
   }
 `;
 
-export default function Login({ isError, errorMessage, onLoginSubmit }) {
+const SpinnerWrapper = styled.div`
+  height: 0;
+`;
+
+export default function Login({ isError, errorMessage, isFetching, onLoginSubmit }) {
   const {
     register,
     handleSubmit,
   } = useForm();
 
   return (
-    <LoginWrapper>
-      <FormWrapper>
-        <AuthHeaderWrapper>
-          <span>로그인</span>
-          <LinkWrapper>
-            <Link to="/register">회원가입</Link>
-          </LinkWrapper>
-        </AuthHeaderWrapper>
-        <Form onSubmit={handleSubmit(onLoginSubmit)}>
-          <Label>이메일 주소</Label>
-          <Input
-            type="email"
-            name="email"
-            {...register('email')}
-            required
-          />
-          <Label>패스워드</Label>
-          <Input
-            type="password"
-            name="password"
-            {...register('password')}
-            required
-          />
-          <Message>{errorMessage}</Message>
-          <Button
-            type="submit"
-            value="로그인"
-          />
-        </Form>
-      </FormWrapper>
-    </LoginWrapper>
+    <>
+      <LoginWrapper>
+        <FormWrapper>
+          <AuthHeaderWrapper>
+            <span>로그인</span>
+            <LinkWrapper>
+              <Link to="/register">회원가입</Link>
+            </LinkWrapper>
+          </AuthHeaderWrapper>
+          <Form onSubmit={handleSubmit(onLoginSubmit)}>
+            <Label>이메일 주소</Label>
+            <Input
+              type="email"
+              name="email"
+              {...register('email')}
+              required
+            />
+            <Label>패스워드</Label>
+            <Input
+              type="password"
+              name="password"
+              {...register('password')}
+              required
+            />
+            <Message>{errorMessage}</Message>
+            <Button
+              type="submit"
+              value="로그인"
+            />
+            <SpinnerWrapper>
+              {isFetching && <Spinner />}
+            </SpinnerWrapper>
+          </Form>
+        </FormWrapper>
+      </LoginWrapper>
+    </>
   );
 }

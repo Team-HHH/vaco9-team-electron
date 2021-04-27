@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { ipcRenderer } from 'electron';
 import { useDispatch } from 'react-redux';
 import { fetchLogin } from '../reducers/login';
+import Spinner from '../components/Spinner.jsx';
 
 const Container = styled.div`
   display: flex;
@@ -28,7 +29,11 @@ export default function Loading({ setUser }) {
 
   return (
     <Container>
-      Loading...
+      <Spinner
+        color="white"
+        loading={true}
+        size={40}
+      />
     </Container>
   );
 }

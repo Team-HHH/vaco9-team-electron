@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import LoginForm from '../components/LoginForm.jsx';
 import { fetchLogin } from '../reducers/login';
 
+
 const Container = styled.div`
   height: 100vh;
 `;
@@ -11,6 +12,7 @@ const Container = styled.div`
 export default function Login() {
   const isError = useSelector((state) => state.loginReducer.isError);
   const errorMessage = useSelector((state) => state.loginReducer.errorMessage);
+  const isFetching = useSelector((state) => state.loginReducer.isFetching);
   const dispatch = useDispatch();
 
   function handleLoginSubmit(data) {
@@ -22,6 +24,7 @@ export default function Login() {
       <LoginForm
         isError={isError}
         errorMessage={errorMessage}
+        isFetching={isFetching}
         onLoginSubmit={handleLoginSubmit} />
     </Container>
   );
