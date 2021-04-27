@@ -1,3 +1,12 @@
+export const sortAlarms = (alarms) => {
+  return alarms.sort((a, b) => {
+    const [a1, a2] = a.time.split(':').map(Number);
+    const [b1, b2] = b.time.split(':').map(Number);
+
+    return a1 - b1 || a2 - b2;
+  });
+}
+
 export const formatTime = (time) => {
   let [hh, mm] = time.split(':');
   const period = Number(hh) < 12 ? '오전' : '오후';

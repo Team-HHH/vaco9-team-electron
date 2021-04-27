@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { ipcRenderer } from 'electron';
-import styled from 'styled-components';
 import AlarmNavbar from '../components/AlarmNavbar.jsx';
 import AlarmRegister from '../components/AlarmRegister.jsx';
+import styled from 'styled-components';
 import { color } from '../css/color';
 
 const Container = styled.div`
@@ -17,9 +17,9 @@ const LeftSection = styled.div`
 `;
 
 const RightSection = styled.div`
-  width: 70vw;
   display: flex;
   flex-direction: column;
+  width: 70vw;
   background-color: ${color.BACK};
 `;
 
@@ -35,7 +35,6 @@ export default function AlarmRegisterPage() {
 
   function handleDeleteButtonClick(time) {
     setAlarms(alarms.filter(alarm => alarm.time !== time));
-
     ipcRenderer.send('deleteAlarm', time);
   }
 
@@ -52,7 +51,7 @@ export default function AlarmRegisterPage() {
 
     const alarm = { time, bodyPart, customVideo };
 
-    setAlarms(alarms.concat(alarm).sort());
+    setAlarms(alarms.concat(alarm));
     ipcRenderer.send('storeAlarm', alarm);
   }
 
@@ -61,8 +60,8 @@ export default function AlarmRegisterPage() {
       <LeftSection>
         <AlarmNavbar
           alarms={alarms}
-          onDeleteButtonClick={handleDeleteButtonClick}
           onToggleClick={handleToggleClick}
+          onDeleteButtonClick={handleDeleteButtonClick}
         />
       </LeftSection>
       <RightSection>
