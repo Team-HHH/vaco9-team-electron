@@ -5,27 +5,8 @@ import LoginForm from '../components/LoginForm.jsx';
 import { login } from '../apis/index.js';
 
 const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
   height: 100vh;
   width: 100vw;
-`;
-
-const FormWrapper = styled.div`
-  display: flex;
-  width: 40%;
-  height: 100%;
-`;
-
-const ImageWrapper = styled.div`
-  display: flex;
-  width: 60%;
-  height: 100%;
-`;
-
-const Img = styled.img`
-  background-color: yellow;
 `;
 
 export default function Login() {
@@ -41,12 +22,7 @@ export default function Login() {
 
   return (
     <Container>
-      <FormWrapper>
-        <LoginForm onLoginSubmit={handleLoginSubmit}/>
-      </FormWrapper>
-      <ImageWrapper>
-        <Img src="" alt=""/>
-      </ImageWrapper>
+      <LoginForm onLoginSubmit={handleLoginSubmit} />
     </Container>
   );
 }

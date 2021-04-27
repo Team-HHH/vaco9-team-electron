@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { color } from '../css/color';
 
 const LoginWrapper = styled.div`
   display: flex;
@@ -9,36 +10,71 @@ const LoginWrapper = styled.div`
   justify-content: center;
   height: 100%;
   width: 100%;
+  background-color: ${color.SUB};
 `;
 
 const FormWrapper = styled.div`
-  height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 420px;
+  width: 400px;
+  background-color: ${color.WHITE};
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+`;
+
+const AuthHeaderWrapper = styled.div`
+  display: flex;
+  position: relative;
+  top: -40px;
+  width: 40%;
+  justify-content: space-between;
+`;
+
+const LinkWrapper = styled.div`
+  opacity: 0.3;
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px;
 `;
 
 const Label = styled.label`
-  color: darkblue;
+  color: ${color.BOLD};
   margin: 3px;
 `;
 
 const Input = styled.input`
   display: block;
 	border: none;
-	padding: 8px 15px;
-	margin: 0 0 20px 0;
-	width: 80%;
-  border-radius: 8px;
+	padding: 10px 8px;
+	margin: 0 0 10px 0;
+	width: 240px;
+  border-radius: 3px;
+  background-color: ${color.LIGHT};
 `;
 
 const Button = styled.input`
+  position: relative;
+  bottom: -58px;
   margin: 20px 0;
   border: none;
   border-radius: 18px;
-  padding: 10px 15px;
-  width: 40%;
-  background-color: yellow;
+  padding: 10px 8px;
+  width: 50%;
+  text-align: center;
+  background-color: ${color.SUB};
   &:hover {
-    background-color: lightyellow;
-    color: black;
+    background-color: ${color.MAIN};
   }
   &:focus {
     outline: none;
@@ -53,29 +89,32 @@ export default function Login({ onLoginSubmit }) {
   return (
     <LoginWrapper>
       <FormWrapper>
-        <h1>Log in to your account</h1>
-        <form onSubmit={handleSubmit(onLoginSubmit)}>
-          <Label>Email Address</Label>
+        <AuthHeaderWrapper>
+          <span>로그인</span>
+          <LinkWrapper>
+            <Link to="/register">회원가입</Link>
+          </LinkWrapper>
+        </AuthHeaderWrapper>
+        <Form onSubmit={handleSubmit(onLoginSubmit)}>
+          <Label>이메일 주소</Label>
           <Input
             type="email"
             name="email"
             {...register('email')}
+            required
           />
-          <Label>Password</Label>
+          <Label>패스워드</Label>
           <Input
             type="password"
             name="password"
             {...register('password')}
+            required
           />
           <Button
             type="submit"
-            value="Login"
+            value="로그인"
           />
-        </form>
-        <div>
-          <span>Dont have account?</span>
-          <Link to="/register">Sign up</Link>
-        </div>
+        </Form>
       </FormWrapper>
     </LoginWrapper>
   );

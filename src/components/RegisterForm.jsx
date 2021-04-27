@@ -2,38 +2,73 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { color } from '../css/color';
 
 const RegisterWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 100%;
+  width: 100%;
+  background-color: ${color.SUB};
 `;
 const FormWrapper = styled.div`
-  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 420px;
+  width: 400px;
+  background-color: ${color.WHITE};
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 `;
+
+const AuthHeaderWrapper = styled.div`
+  display: flex;
+  position: relative;
+  top: 18px;
+  width: 40%;
+  justify-content: space-between;
+`;
+
+const LinkWrapper = styled.div`
+  opacity: 0.3;
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+`;
+
 const Label = styled.label`
-  color: yellowgreen;
+  color: ${color.BOLD};
   margin: 3px;
 `;
 const Input = styled.input`
   display: block;
-  border: none;
-	padding: 8px 15px;
-  margin: 0 0 10px 0;
-	width: 80%;
-  border-radius: 8px;
-  background-color: #eee;
+	border: none;
+	padding: 8px 8px;
+	margin: 0 0 8px 0;
+	width: 240px;
+  border-radius: 3px;
+  background-color: ${color.LIGHT};
 `;
 const Button = styled.input`
-  margin: 20px 0;
+   margin: 20px 0;
   border: none;
   border-radius: 18px;
   padding: 10px 15px;
-  width: 40%;
-  background-color: yellow;
+  width: 50%;
+  background-color: ${color.SUB};
   &:hover {
-    background-color: yellowgreen;
+    background-color: ${color.MAIN};
     color: black;
   }
   &:focus {
@@ -54,26 +89,31 @@ export default function Register({ onRegisterSubmit }) {
   return (
     <RegisterWrapper>
       <FormWrapper>
-        <h1>Create your account</h1>
-        <form
+        <AuthHeaderWrapper>
+          <LinkWrapper>
+            <Link to="/login">로그인</Link>
+          </LinkWrapper>
+          <span>회원가입</span>
+        </AuthHeaderWrapper>
+        <Form
           name="form"
           onSubmit={handleSubmit(onRegisterSubmit)}
         >
-          <Label>Email</Label>
+          <Label>이메일 주소</Label>
           <Input
             type="email"
             name="email"
             {...register('email')}
             required
           />
-          <Label>Name</Label>
+          <Label>이름</Label>
           <Input
             type="text"
             name="name"
             {...register('name')}
             required
           />
-          <Label>Password</Label>
+          <Label>패스워드</Label>
           <Input
             type="password"
             name="password"
@@ -81,7 +121,7 @@ export default function Register({ onRegisterSubmit }) {
             minLength="8"
             required
           />
-          <Label>Confirm Password</Label>
+          <Label>패스워드 확인</Label>
           <Input
             type="password"
             name="passwordConfirm"
@@ -91,13 +131,9 @@ export default function Register({ onRegisterSubmit }) {
           />
           <Button
             type="submit"
-            value="Register"
+            value="회원가입"
           />
-        </form>
-        <div>
-          <span>Have account?</span>
-          <Link to="/login">Login</Link>
-        </div>
+        </Form>
       </FormWrapper>
     </RegisterWrapper>
   );
