@@ -4,21 +4,31 @@ import { ipcRenderer } from 'electron';
 import { useDispatch } from 'react-redux';
 import { fetchLogin } from '../reducers/login';
 import Spinner from '../components/Spinner.jsx';
+import { color } from '../css/color';
 
 const Container = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: ${color.MAIN};
 `;
+
+function timeout(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 export default function Loading({ setUser }) {
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  useEffect(async () => {
     ipcRenderer.on('loginDataExist', async (event, data) => {
       const userData = {
         email: data.account,
         password: data.password,
       };
-
+      await timeout(3000);
       dispatch(fetchLogin(userData));
     });
 
