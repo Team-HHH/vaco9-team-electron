@@ -67,9 +67,7 @@ const Input = styled.input`
 const Message = styled.div`
   height: 0;
   position: relative;
-  height: 0;
-  top: 50px;
-  left: 50px;
+  text-align: center;
 `;
 
 const Button = styled.input`

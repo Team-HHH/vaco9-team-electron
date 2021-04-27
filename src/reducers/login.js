@@ -5,8 +5,6 @@ const LOGIN_PENDING = 'LOGIN_PENDING';
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 const LOGIN_FAILURE = 'LOGIN_FAILURE';
 
-
-
 function timeout(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -34,7 +32,7 @@ function loginFail(message) {
 export function fetchLogin(loginInput) {
   return async function (dispatch) {
     dispatch(requestLogin());
-    await timeout(300000);
+    await timeout(3000);
     try {
       const response = await login(loginInput);
       const { name } = response.data;
@@ -47,21 +45,6 @@ export function fetchLogin(loginInput) {
     }
   }
 }
-
-
-// export const fetchLogin = (loginInput) => async (dispatch) => {
-//   try {
-//     const response = await login(loginInput);
-//     console.log(response.data);
-//     const { name } = response.data;
-
-//     dispatch(loginSuccess(name));
-//     ipcRenderer.send('storeUserData', loginInput);
-//     window.location.hash = '#/alarmRegister';
-//   } catch (error) {
-//     dispatch(loginFail(error.message));
-//   }
-// };
 
 const initialState = {
   isFetching: false,

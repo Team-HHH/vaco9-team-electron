@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 import countries from '../constants/countries';
 import { color } from '../css/color';
+import Spinner from '../components/Spinner.jsx';
 
 const RegisterWrapper = styled.div`
   display: flex;
@@ -192,6 +193,9 @@ export default function Register({ onRegisterSubmit }) {
             type="submit"
             value="회원가입"
           />
+          <SpinnerWrapper>
+            {isFetching && <Spinner />}
+          </SpinnerWrapper>
         </Form>
       </FormWrapper>
     </RegisterWrapper>
