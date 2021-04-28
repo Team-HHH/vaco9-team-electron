@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain, Notification } = require('electron');
 const { parse, isFuture, differenceInMilliseconds } = require('date-fns');
 const keytar = require('keytar');
+
 const { getVideos, getAds, sendStats } = require('./apis');
 const VideoStore = require('./store/videos');
 const AlarmStore = require('./store/alarms');
@@ -14,7 +15,7 @@ if (require('electron-squirrel-startup')) {
 const createWindow = async () => {
   const mainWindow = new BrowserWindow({
     width: 800,
-    height: 600,
+    height: 800,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,

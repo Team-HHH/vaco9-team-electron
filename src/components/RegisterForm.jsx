@@ -1,7 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+
+import countries from '../constants/countries';
 import { color } from '../css/color';
 
 const RegisterWrapper = styled.div`
@@ -17,8 +19,8 @@ const FormWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 420px;
-  width: 400px;
+  height: 85%;
+  width: 60%;
   background-color: ${color.WHITE};
   border-radius: 5px;
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
@@ -51,6 +53,7 @@ const Label = styled.label`
   color: ${color.BOLD};
   margin: 3px;
 `;
+
 const Input = styled.input`
   display: block;
 	border: none;
@@ -60,8 +63,9 @@ const Input = styled.input`
   border-radius: 3px;
   background-color: ${color.LIGHT};
 `;
+
 const Button = styled.input`
-   margin: 20px 0;
+  margin: 20px 0;
   border: none;
   border-radius: 18px;
   padding: 10px 15px;
@@ -75,6 +79,27 @@ const Button = styled.input`
     outline: none;
   }
 `;
+
+const Gender = styled.select`
+  margin: 10px 0;
+	padding: 10px 15px;
+	width: 76%;
+  border: 1px solid ${color.LIGHT};
+  &:focus {
+    outline: none;
+  }
+`;
+
+const Country = styled.select`
+  margin: 10px 0;
+	padding: 10px 15px;
+	width: 76%;
+  border: 1px solid ${color.LIGHT};
+  &:focus {
+    outline: none;
+  }
+`;
+
 const Message = styled.p`
   margin: 0;
   font-size: 10px;
@@ -86,6 +111,7 @@ export default function Register({ onRegisterSubmit }) {
     register,
     handleSubmit,
   } = useForm();
+
   return (
     <RegisterWrapper>
       <FormWrapper>
@@ -129,6 +155,38 @@ export default function Register({ onRegisterSubmit }) {
             minLength="8"
             required
           />
+          <Label>나이</Label>
+          <Input
+            type="number"
+            name="age"
+            min="18"
+            max="65"
+            {...register('age', { min: 18, max: 65 })}
+            required
+          />
+          <Label>성별</Label>
+          <Gender
+            name="gender"
+            {...register('gender')}
+            required
+          >
+            <option value={'male'}>남자</option>
+            <option value={'female'}>여자</option>
+          </Gender>
+          <Label>지역</Label>
+          <Country
+            name="country"
+            {...register('country')}
+            required
+          >
+            {
+              Object.entries(countries).map((item) => {
+                const [englishName, koreanName] = item;
+
+                return <option value={englishName}>{koreanName}</option>;
+              })
+            }
+          </Country>
           <Button
             type="submit"
             value="회원가입"
