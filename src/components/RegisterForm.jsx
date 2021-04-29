@@ -5,26 +5,6 @@ import styled from 'styled-components';
 
 import countries from '../constants/countries';
 import { color } from '../css/color';
-import Spinner from '../components/Spinner.jsx';
-import Joi from 'joi';
-
-const schema = Joi.object({
-  email: Joi.string()
-    .email({ tlds: { allow: false } })
-    .required(),
-  name: Joi.string()
-    .required(),
-  password: Joi.string()
-    .min(8)
-    .max(20)
-    .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])'))
-    .required(),
-  passwordConfirm: Joi.string()
-    .min(8)
-    .max(20)
-    .valid(Joi.ref('password'))
-    .required(),
-});
 
 const RegisterWrapper = styled.div`
   display: flex;
@@ -131,10 +111,7 @@ export default function Register({ onRegisterSubmit }) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: joiResolver(schema),
-  });
+  } = useForm();
 
   return (
     <RegisterWrapper>
@@ -156,22 +133,12 @@ export default function Register({ onRegisterSubmit }) {
             {...register('email')}
             required
           />
-          <ErrorMessage
-            errors={errors}
-            name="email"
-            render={() => <Message>{commonErrorMessage.INVALID_EMAIL}</Message>}
-          />
           <Label>이름</Label>
           <Input
             type="text"
             name="name"
             {...register('name')}
             required
-          />
-          <ErrorMessage
-            errors={errors}
-            name="name"
-            render={() => <Message>{registerErrorMessage.INVALID_NAME}</Message>}
           />
           <Label>패스워드</Label>
           <Input
@@ -180,11 +147,6 @@ export default function Register({ onRegisterSubmit }) {
             {...register('password')}
             minLength="8"
             required
-          />
-          <ErrorMessage
-            errors={errors}
-            name="password"
-            render={() => <Message>{commonErrorMessage.INVALID_PASSWORD}</Message>}
           />
           <Label>패스워드 확인</Label>
           <Input
@@ -230,9 +192,6 @@ export default function Register({ onRegisterSubmit }) {
             type="submit"
             value="회원가입"
           />
-          <SpinnerWrapper>
-            {isFetching && <Spinner />}
-          </SpinnerWrapper>
         </Form>
       </FormWrapper>
     </RegisterWrapper>
