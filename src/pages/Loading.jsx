@@ -15,10 +15,6 @@ const Container = styled.div`
   background-color: ${color.MAIN};
 `;
 
-function timeout(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 export default function Loading({ setUser }) {
   const dispatch = useDispatch();
 
@@ -28,7 +24,7 @@ export default function Loading({ setUser }) {
         email: data.account,
         password: data.password,
       };
-      await timeout(3000);
+
       dispatch(fetchLogin(userData));
     });
 

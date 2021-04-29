@@ -5,10 +5,6 @@ const LOGIN_PENDING = 'LOGIN_PENDING';
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 const LOGIN_FAILURE = 'LOGIN_FAILURE';
 
-function timeout(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 function requestLogin() {
   return {
     type: LOGIN_PENDING,
@@ -32,7 +28,7 @@ function loginFail(message) {
 export function fetchLogin(loginInput) {
   return async function (dispatch) {
     dispatch(requestLogin());
-    await timeout(3000);
+
     try {
       const response = await login(loginInput);
       const { name } = response.data;

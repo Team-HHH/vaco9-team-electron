@@ -92,7 +92,6 @@ async function prepareAlarm(alarm) {
     if (isFuture(alarmTime)) {
       const response = await getAds();
       const { campaignId, content, campaignUrl } = response.data.data;
-
       const notifyId = setTimeout(() => {
         const options = {
           title: '스트레칭 3분 전입니다.',

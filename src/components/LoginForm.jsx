@@ -1,5 +1,9 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { joiResolver } from '@hookform/resolvers/joi';
+import { ErrorMessage } from '@hookform/error-message';
+import { schema } from '../validations/loginFormSchema';
+import { commonErrorMessage } from '../constants/validationErrorMessage';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { color } from '../css/color';
@@ -64,7 +68,7 @@ const Input = styled.input`
   background-color: ${color.LIGHT};
 `;
 
-const Message = styled.div`
+const ResultMessage = styled.div`
   height: 0;
   position: relative;
   text-align: center;
@@ -92,11 +96,23 @@ const SpinnerWrapper = styled.div`
   height: 0;
 `;
 
+const Message = styled.p`
+  position: relative;
+  top: -9px;
+  margin: 0;
+  height: 0;
+  font-size: 10px;
+  color: red;
+`;
+
 export default function Login({ isError, errorMessage, isFetching, onLoginSubmit }) {
   const {
     register,
     handleSubmit,
-  } = useForm();
+    formState: { errors },
+  } = useForm({
+    resolver: joiResolver(schema)
+  });
 
   return (
     <>
@@ -116,6 +132,11 @@ export default function Login({ isError, errorMessage, isFetching, onLoginSubmit
               {...register('email')}
               required
             />
+            <ErrorMessage
+              errors={errors}
+              name="email"
+              render={() => <Message>{commonErrorMessage.INVALID_EMAIL}</Message>}
+            />
             <Label>패스워드</Label>
             <Input
               type="password"
@@ -123,7 +144,12 @@ export default function Login({ isError, errorMessage, isFetching, onLoginSubmit
               {...register('password')}
               required
             />
-            <Message>{errorMessage}</Message>
+            <ErrorMessage
+              errors={errors}
+              name="password"
+              render={() => <Message>{commonErrorMessage.INVALID_PASSWORD}</Message>}
+            />
+            <ResultMessage>{errorMessage}</ResultMessage>
             <Button
               type="submit"
               value="로그인"
