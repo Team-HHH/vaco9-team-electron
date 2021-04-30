@@ -16,7 +16,6 @@ export default function App() {
   const [campaignId, setCampaignId] = useState('');
   const [content, setContent] = useState('');
   const [campaignUrl, serCampaignUrl] = useState('');
-  const [user, setUser] = useState({});
 
   useEffect(() => {
     ipcRenderer.on('playVideo', (event, campaignId, content, url, campaignUrl) => {

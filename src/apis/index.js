@@ -16,9 +16,7 @@ exports.getAds = async function (token) {
   try {
     const url = `${serverUrl}/campaign/popup`;
     const response = await axios.get(url, {
-      headers: {
-        Authorization: token,
-      }
+      headers: { 'Authorization': token }
     });
 
     return response;
@@ -27,12 +25,17 @@ exports.getAds = async function (token) {
 
 };
 
-exports.sendStats = async function (campaignId, type) {
+exports.sendStats = async function (campaignId, type, token) {
   try {
     const url = `${serverUrl}/campaign/stats`;
-    await axios.patch(url, {
-      campaignId,
-      type
+    await axios({
+      method: 'patch',
+      url,
+      headers: { 'Authorization': token },
+      data: {
+        campaignId,
+        type
+      }
     });
   } catch (error) {
   }
@@ -42,7 +45,6 @@ exports.login = async function (data) {
 
   try {
     const url = `${serverUrl}/auth/login/user`;
-    // const url = `http://localhost:5000/auth/login/user`;
     const response = await axios.post(url, data);
 
     return response;

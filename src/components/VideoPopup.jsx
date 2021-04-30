@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import YouTube from "react-youtube";
 import styled, { css } from "styled-components";
 import { ipcRenderer, shell } from 'electron';
-import { sendStats } from '../apis/index';
 import { color } from '../css/color';
 
 const PopupWrapper = styled.div`
@@ -34,6 +33,9 @@ const BannerWrapper = styled.div`
 const Banner = styled.img`
   width: 100%;
   height: 100%;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const LoadingWrapper = styled.div`
@@ -99,7 +101,7 @@ export default function VideoPopup({ videoUrl, campaignId, content, campaignUrl 
   function handleClickBanner(event) {
     event.preventDefault();
 
-    sendStats(campaignId, 'click');
+    ipcRenderer.send('clickBanner', campaignId);
     shell.openExternal(campaignUrl);
   }
 
