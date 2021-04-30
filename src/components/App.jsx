@@ -31,7 +31,7 @@ export default function App() {
     <Router>
       <Switch>
         <Route path="/loading">
-          <Loading setUser={setUser} />
+          <Loading />
         </Route>
         <Route path="/login">
           <Login />

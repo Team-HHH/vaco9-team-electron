@@ -15,7 +15,7 @@ const Container = styled.div`
   background-color: ${color.MAIN};
 `;
 
-export default function Loading({ setUser }) {
+export default function Loading() {
   const dispatch = useDispatch();
 
   useEffect(async () => {
