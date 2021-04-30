@@ -31,9 +31,9 @@ export function fetchLogin(loginInput) {
 
     try {
       const response = await login(loginInput);
-      const { name } = response.data;
+      const { name, accessToken } = response.data.data;
 
-      dispatch(loginSuccess(name));
+      dispatch(loginSuccess({ name, accessToken }));
       ipcRenderer.send('storeUserData', loginInput);
       window.location.hash = '#/alarmRegister';
     } catch (error) {
@@ -46,6 +46,7 @@ const initialState = {
   isFetching: false,
   isLoggedIn: false,
   name: null,
+  accessToken: '',
   isError: false,
   errorMessage: '',
 }
@@ -61,7 +62,7 @@ export default function loginReducer(state = initialState, action) {
       return {
         ...state,
         isLoggedIn: true,
-        name: action.payload,
+        ...action.payload,
         isFetching: false,
       };
     case LOGIN_FAILURE:

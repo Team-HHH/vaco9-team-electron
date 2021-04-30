@@ -1,40 +1,61 @@
 const axios = require('axios');
 
-const serverUrl = 'https://api.flexilis.xyz';
+const serverUrl = 'http://localhost:5000';
 
 exports.getVideos = async function () {
-  const url = `${serverUrl}/videos`;
-  const response = await axios.get(url);
+  try {
+    const url = `${serverUrl}/videos`;
+    const response = await axios.get(url);
 
-  return response;
+    return response;
+  } catch (error) {
+  }
 };
 
-exports.getAds = async function () {
-  const url = `${serverUrl}/campaign/popup`;
-  const response = await axios.get(url);
+exports.getAds = async function (token) {
+  try {
+    const url = `${serverUrl}/campaign/popup`;
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: token,
+      }
+    });
 
-  return response;
+    return response;
+  } catch (error) {
+  }
+
 };
 
 exports.sendStats = async function (campaignId, type) {
-  const url = `${serverUrl}/campaign/stats`;
-  await axios.patch(url, {
-    campaignId,
-    type
-  });
+  try {
+    const url = `${serverUrl}/campaign/stats`;
+    await axios.patch(url, {
+      campaignId,
+      type
+    });
+  } catch (error) {
+  }
 }
 
 exports.login = async function (data) {
-  const url = `${serverUrl}/auth/login/user`;
-  // const url = `http://localhost:5000/auth/login/user`;
-  const response = await axios.post(url, data);
 
-  return response;
+  try {
+    const url = `${serverUrl}/auth/login/user`;
+    // const url = `http://localhost:5000/auth/login/user`;
+    const response = await axios.post(url, data);
+
+    return response;
+  } catch (error) {
+  }
 }
 
 exports.register = async function (data) {
-  const url = `${serverUrl}/auth/register/user`;
-  const response = await axios.post(url, data);
+  try {
+    const url = `${serverUrl}/auth/register/user`;
+    const response = await axios.post(url, data);
 
-  return response;
+    return response;
+  } catch (error) {
+  }
 }

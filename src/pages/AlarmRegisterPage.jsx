@@ -4,6 +4,7 @@ import AlarmNavbar from '../components/AlarmNavbar.jsx';
 import AlarmRegister from '../components/AlarmRegister.jsx';
 import styled from 'styled-components';
 import { color } from '../css/color';
+import { useSelector } from 'react-redux';
 
 const Container = styled.div`
   display: flex;
@@ -25,12 +26,15 @@ const RightSection = styled.div`
 
 export default function AlarmRegisterPage() {
   const [alarms, setAlarms] = useState([]);
+  const token = useSelector((state) => state.loginReducer.accessToken);
 
   useEffect(() => {
     ipcRenderer.send('requestAlarms');
     ipcRenderer.on('loadAlarms', (event, data) => {
       setAlarms(data);
     });
+
+    ipcRenderer.send('requestPrepareAlarms', token);
   }, []);
 
   function handleDeleteButtonClick(time) {
@@ -52,7 +56,7 @@ export default function AlarmRegisterPage() {
     const alarm = { time, bodyPart, customVideo };
 
     setAlarms(alarms.concat(alarm));
-    ipcRenderer.send('storeAlarm', alarm);
+    ipcRenderer.send('storeAlarm', token, alarm);
   }
 
   return (
