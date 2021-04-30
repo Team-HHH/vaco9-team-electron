@@ -166,11 +166,11 @@ ipcMain.on('deleteAlarm', (event, time) => {
 });
 
 ipcMain.on('toggleAlarm', (event, time) => {
-  if (timerIds[time].status === 'active') {
+  if (timerIds[time] && timerIds[time].status === 'active') {
     clearTimeout(timerIds[time].notifyId);
     clearTimeout(timerIds[time].popupId);
     timerIds[time].status = 'pause';
-  } else if (timerIds[time].status === 'pause') {
+  } else if (timerIds[time] && timerIds[time].status === 'pause') {
     prepareAlarm(alarms.get().find(alarm => alarm.time === time));
   }
 });
