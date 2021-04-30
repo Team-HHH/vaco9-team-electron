@@ -3,6 +3,7 @@ import YouTube from "react-youtube";
 import styled, { css } from "styled-components";
 import { ipcRenderer, shell } from 'electron';
 import { sendStats } from '../apis/index';
+import { color } from '../css/color';
 
 const PopupWrapper = styled.div`
   display: flex;
@@ -38,7 +39,7 @@ const Banner = styled.img`
 const LoadingWrapper = styled.div`
   width: 100%;
   height: 100%;
-  background: #00A82D;
+  background: ${color.SUB};
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -63,8 +64,8 @@ const LoadingWrapper = styled.div`
 
   p {
     margin: 0 0 1em 0;
-    font-size: 2em;
-    color: #ffffff;
+    font-size: 5em;
+    color: ${color.BOLD};
   }
 `;
 

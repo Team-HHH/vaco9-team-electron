@@ -1,28 +1,30 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { ipcRenderer } from 'electron';
 import LoginForm from '../components/LoginForm.jsx';
-import { login } from '../apis/index.js';
+import { fetchLogin } from '../reducers/login';
 
 const Container = styled.div`
   height: 100vh;
-  width: 100vw;
 `;
 
 export default function Login() {
-  async function handleLoginSubmit(data) {
-    try {
-      const response = await login(data);
-      window.location.hash = '#/alarmRegister';
-      ipcRenderer.send('storeUserData', data);
-    } catch (error) {
-      window.location.hash = '#/login';
-    }
+  const isError = useSelector((state) => state.loginReducer.isError);
+  const errorMessage = useSelector((state) => state.loginReducer.errorMessage);
+  const isFetching = useSelector((state) => state.loginReducer.isFetching);
+  const dispatch = useDispatch();
+
+  function handleLoginSubmit(data) {
+    dispatch(fetchLogin(data));
   }
 
   return (
     <Container>
-      <LoginForm onLoginSubmit={handleLoginSubmit} />
+      <LoginForm
+        isError={isError}
+        errorMessage={errorMessage}
+        isFetching={isFetching}
+        onLoginSubmit={handleLoginSubmit} />
     </Container>
   );
 }

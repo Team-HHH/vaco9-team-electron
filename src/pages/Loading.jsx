@@ -1,27 +1,31 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { ipcRenderer } from 'electron';
-import { login } from '../apis/index';
+import { useDispatch } from 'react-redux';
+import { fetchLogin } from '../reducers/login';
+import Spinner from '../components/Spinner.jsx';
+import { color } from '../css/color';
 
 const Container = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: ${color.MAIN};
 `;
 
 export default function Loading({ setUser }) {
-  useEffect(() => {
+  const dispatch = useDispatch();
+
+  useEffect(async () => {
     ipcRenderer.on('loginDataExist', async (event, data) => {
-      try {
-        const response = await login({
-          email: data.account,
-          password: data.password,
-        });
+      const userData = {
+        email: data.account,
+        password: data.password,
+      };
 
-        setUser(response.data);
-
-        window.location.hash = '#/alarmRegister';
-      } catch (error) {
-        ipcRenderer.send('deleteUserData', data.account);
-      }
+      dispatch(fetchLogin(userData));
     });
 
     ipcRenderer.on('loginDataDoesNotExist', (event, data) => {
@@ -31,7 +35,11 @@ export default function Loading({ setUser }) {
 
   return (
     <Container>
-      Loading...
+      <Spinner
+        color="white"
+        loading={true}
+        size={40}
+      />
     </Container>
-  )
+  );
 }

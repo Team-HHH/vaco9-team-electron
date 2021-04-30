@@ -1,26 +1,26 @@
 import React from 'react';
+import { formatTime } from '../util/index';
 import styled from 'styled-components';
 import { color } from '../css/color';
-import { formatTime } from '../util/index';
 
 const Card = styled.div`
-  background-color: ${color.WHITE};
-  height: 60px;
   display: flex;
   justify-content: center;
+  height: 60px;
   margin: 10px;
   padding: 10px;
   border-radius: 5px;
+  background-color: ${color.WHITE};
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 `;
 
 const Time = styled.span`
-  margin: auto 0;
-  width: 30%;
   text-align: center;
+  width: 30%;
+  margin: auto 0;
   opacity: 0.6;
   font-size: 24px;
-  color: ${color.MAIN_FONT}
+  color: ${color.MAIN_FONT};
 `;
 
 const DeleteButtonWrapper = styled.div`
@@ -28,8 +28,8 @@ const DeleteButtonWrapper = styled.div`
 `;
 
 const DeleteButton = styled.button`
-  height: 20px;
   align-self: right;
+  height: 20px;
   border: none;
   opacity: 0.3;
   &:hover {
@@ -40,12 +40,12 @@ const DeleteButton = styled.button`
 const ToggleWrapper = styled.label`
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 30%;
   text-transform: uppercase;
   font-size: 10px;
   font-weight: 600;
   user-select: none;
-  align-items: center;
   &:not(:last-child) {
       margin-bottom: 10px;
   }
@@ -55,12 +55,12 @@ const ToggleWrapper = styled.label`
 `;
 
 const Toggle = styled.input`
-  opacity: 0;
   position: absolute;
-  width: 1px;
-  height: 1px;
   align-self: center;
   z-index: -1;
+   width: 1px;
+  height: 1px;
+  opacity: 0;
   &:checked {
       ~ i {
           background: ${color.SUB};
@@ -73,16 +73,16 @@ const Toggle = styled.input`
 `;
 
 const ToggleButton = styled.i`
-  outline: 0;
+  position: relative;
   display: block;
+  outline: 0;
   width: 20px;
   height: 10px;
-  position: relative;
+  padding: 2px;
   cursor: pointer;
   user-select: none;
-  background: ${color.LIGHT};
   border-radius: 10px;
-  padding: 2px;
+  background: ${color.LIGHT};
   transition: all 0.4s ease;
   &:after,
   &:before {
@@ -92,14 +92,12 @@ const ToggleButton = styled.i`
       width: 50%;
       height: 100%;
   }
-
   &:after {
       left: 0;
       border-radius: 50%;
       background: ${color.DARK};
       transition: all 0.2s ease;
   }
-
   &:before {
       display: none;
   }
@@ -107,6 +105,7 @@ const ToggleButton = styled.i`
 
 export default function AlarmCard({ time, onDeleteButtonClick, onToggleClick }) {
   const { period, hhmm } = formatTime(time);
+
   return (
     <Card>
       <Time>{period}</Time>
@@ -118,7 +117,7 @@ export default function AlarmCard({ time, onDeleteButtonClick, onToggleClick }) 
           defaultChecked={true}
           onChange={onToggleClick}
         />
-        <ToggleButton></ToggleButton>
+        <ToggleButton />
       </ToggleWrapper>
       <DeleteButtonWrapper>
         <DeleteButton

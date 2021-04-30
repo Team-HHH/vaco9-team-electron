@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { ipcRenderer } from 'electron';
-import styled from 'styled-components';
 import AlarmNavbar from '../components/AlarmNavbar.jsx';
 import AlarmRegister from '../components/AlarmRegister.jsx';
+import styled from 'styled-components';
 import { color } from '../css/color';
+import { useSelector } from 'react-redux';
 
 const Container = styled.div`
   display: flex;
@@ -17,25 +18,27 @@ const LeftSection = styled.div`
 `;
 
 const RightSection = styled.div`
-  width: 70vw;
   display: flex;
   flex-direction: column;
+  width: 70vw;
   background-color: ${color.BACK};
 `;
 
 export default function AlarmRegisterPage() {
   const [alarms, setAlarms] = useState([]);
+  const token = useSelector((state) => state.loginReducer.accessToken);
 
   useEffect(() => {
     ipcRenderer.send('requestAlarms');
     ipcRenderer.on('loadAlarms', (event, data) => {
       setAlarms(data);
     });
+
+    ipcRenderer.send('requestPrepareAlarms', token);
   }, []);
 
   function handleDeleteButtonClick(time) {
     setAlarms(alarms.filter(alarm => alarm.time !== time));
-
     ipcRenderer.send('deleteAlarm', time);
   }
 
@@ -43,8 +46,8 @@ export default function AlarmRegisterPage() {
     ipcRenderer.send('toggleAlarm', time);
   }
 
-  function handleRegisterAlarmSubmit(event, time, bodyPart, customVideo) {
-    event.preventDefault();
+  function handleRegisterAlarmSubmit(data) {
+    const { time, bodyPart, customVideo } = data;
 
     if (alarms.some(alarm => alarm.time === time)) {
       return;
@@ -52,8 +55,8 @@ export default function AlarmRegisterPage() {
 
     const alarm = { time, bodyPart, customVideo };
 
-    setAlarms(alarms.concat(alarm).sort());
-    ipcRenderer.send('storeAlarm', alarm);
+    setAlarms(alarms.concat(alarm));
+    ipcRenderer.send('storeAlarm', token, alarm);
   }
 
   return (
@@ -61,8 +64,8 @@ export default function AlarmRegisterPage() {
       <LeftSection>
         <AlarmNavbar
           alarms={alarms}
-          onDeleteButtonClick={handleDeleteButtonClick}
           onToggleClick={handleToggleClick}
+          onDeleteButtonClick={handleDeleteButtonClick}
         />
       </LeftSection>
       <RightSection>

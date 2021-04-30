@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const { app, BrowserWindow, ipcMain, Notification } = require('electron');
 const { parse, isFuture, differenceInMilliseconds } = require('date-fns');
 const keytar = require('keytar');
@@ -37,7 +39,7 @@ const createWindow = async () => {
   mainWindow.webContents.openDevTools();
 };
 
-const createVideoWindow = async (campaignId, content, videoUrl) => {
+const createVideoWindow = async (campaignId, content, videoUrl, campaignUrl) => {
   const videoWindow = new BrowserWindow({
     fullscreen: true,
     webPreferences: {
@@ -79,7 +81,7 @@ const alarms = new AlarmStore({
   }
 })();
 
-async function prepareAlarm(alarm) {
+async function prepareAlarm(token, alarm) {
   const currentAlarms = alarm ? [alarm] : alarms.get();
   const now = new Date();
 
@@ -88,7 +90,8 @@ async function prepareAlarm(alarm) {
     const diffMilliseconds = differenceInMilliseconds(alarmTime, now);
 
     if (isFuture(alarmTime)) {
-      const response = await getAds();
+      const response = await getAds(token);
+
       const { campaignId, content, campaignUrl } = response.data.data;
 
       const notifyId = setTimeout(() => {
@@ -120,8 +123,6 @@ async function prepareAlarm(alarm) {
   };
 };
 
-prepareAlarm();
-
 app.on('ready', () => {
   createWindow();
 });
@@ -138,8 +139,12 @@ app.on('activate', () => {
   }
 });
 
-ipcMain.on('storeAlarm', (event, alarm) => {
-  prepareAlarm(alarm);
+ipcMain.on('requestPrepareAlarms', (event, token) => {
+  prepareAlarm(token);
+});
+
+ipcMain.on('storeAlarm', (event, token, alarm) => {
+  prepareAlarm(token, alarm);
 
   alarms.set(alarm.time, alarm.bodyPart, alarm.customVideo);
 });
@@ -161,11 +166,11 @@ ipcMain.on('deleteAlarm', (event, time) => {
 });
 
 ipcMain.on('toggleAlarm', (event, time) => {
-  if (timerIds[time].status === 'active') {
+  if (timerIds[time] && timerIds[time].status === 'active') {
     clearTimeout(timerIds[time].notifyId);
     clearTimeout(timerIds[time].popupId);
     timerIds[time].status = 'pause';
-  } else if (timerIds[time].status === 'pause') {
+  } else if (timerIds[time] && timerIds[time].status === 'pause') {
     prepareAlarm(alarms.get().find(alarm => alarm.time === time));
   }
 });

@@ -14,6 +14,7 @@ const RegisterWrapper = styled.div`
   width: 100%;
   background-color: ${color.SUB};
 `;
+
 const FormWrapper = styled.div`
   display: flex;
   flex-direction: column;
