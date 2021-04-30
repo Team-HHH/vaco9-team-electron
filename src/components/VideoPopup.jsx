@@ -16,7 +16,7 @@ const PopupWrapper = styled.div`
 const VideoWrapper = styled.div`
   display: flex;
   width: 100%;
-  height: calc(100vh - 100px);
+  height: ${props => props.content ? 'calc(100vh - 100px)' : '100vh'};
 
   div {
     width: 100%;
@@ -110,7 +110,7 @@ export default function VideoPopup({ videoUrl, campaignId, content, campaignUrl 
       <LoadingWrapper hide={test} speed={"1s"} delay={"1.5s"}>
         <p>스트레칭 시간입니다!!</p>
       </LoadingWrapper>
-      <VideoWrapper>
+      <VideoWrapper content={content}>
         <YouTube
           videoId={videoCode}
           allow="fullscreen;"
@@ -119,12 +119,14 @@ export default function VideoPopup({ videoUrl, campaignId, content, campaignUrl 
           opts={opts}
         />
       </VideoWrapper>
-      <BannerWrapper>
-        <Banner
-          src={content}
-          onClick={handleClickBanner}
-        />
-      </BannerWrapper>
+      {content && (
+        <BannerWrapper>
+          <Banner
+            src={content}
+            onClick={handleClickBanner}
+          />
+        </BannerWrapper>
+      )}
     </PopupWrapper>
   );
 }

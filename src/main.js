@@ -40,7 +40,7 @@ const createWindow = async () => {
   mainWindow.webContents.openDevTools();
 };
 
-const createVideoWindow = async (campaignId, content, videoUrl, campaignUrl, token) => {
+const createVideoWindow = async (videoUrl, campaignId, content, campaignUrl, token) => {
   const videoWindow = new BrowserWindow({
     fullscreen: true,
     webPreferences: {
@@ -49,7 +49,10 @@ const createVideoWindow = async (campaignId, content, videoUrl, campaignUrl, tok
     },
   });
 
-  await sendStats(campaignId, 'reach', token);
+  if (content) {
+    await sendStats(campaignId, 'reach', token);
+  }
+
   videoWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
   videoWindow.webContents.openDevTools();
 
@@ -98,33 +101,61 @@ async function prepareAlarm(token, alarm) {
     if (isFuture(alarmTime)) {
       const response = await getAds(token);
 
-      const { campaignId, content, campaignUrl } = response.data.data;
+      if (!response.data.data) {
+        const notifyId = setTimeout(() => {
+          const options = {
+            title: '스트레칭 3분 전입니다.',
+            body: `이번엔 ${bodyParts[alarm.bodyPart]} 스트레칭 시간입니다.`,
+          };
 
-      const notifyId = setTimeout(() => {
-        const options = {
-          title: '스트레칭 3분 전입니다.',
-          body: `이번엔 ${bodyParts[alarm.bodyPart]} 스트레칭 시간입니다.`,
+          new Notification(options).show();
+        }, diffMilliseconds - 1000 * 60 * 3);
+
+        const popupId = setTimeout(() => {
+          if (alarm.customVideo.length !== 0) {
+            createVideoWindow(alarm.customVideo);
+          } else {
+            const videos = stretchVideos.get(alarm.bodyPart);
+            const videoUrl = videos[Math.floor(Math.random() * videos.length)];
+
+            createVideoWindow(videoUrl);
+          }
+        }, diffMilliseconds);
+
+        timerIds[alarm.time] = {
+          'notifyId': notifyId,
+          'popupId': popupId,
+          'status': 'active',
         };
+      } else {
+        const { campaignId, content, campaignUrl } = response.data.data;
 
-        new Notification(options).show();
-      }, diffMilliseconds - 1000 * 60 * 3);
+        const notifyId = setTimeout(() => {
+          const options = {
+            title: '스트레칭 3분 전입니다.',
+            body: `이번엔 ${bodyParts[alarm.bodyPart]} 스트레칭 시간입니다.`,
+          };
 
-      const popupId = setTimeout(() => {
-        if (alarm.customVideo.length !== 0) {
-          createVideoWindow(campaignId, content, alarm.customVideo, campaignUrl, token);
-        } else {
-          const videos = stretchVideos.get(alarm.bodyPart);
-          const videoUrl = videos[Math.floor(Math.random() * videos.length)];
+          new Notification(options).show();
+        }, diffMilliseconds - 1000 * 60 * 3);
 
-          createVideoWindow(campaignId, content, videoUrl, campaignUrl, token);
-        }
-      }, diffMilliseconds);
+        const popupId = setTimeout(() => {
+          if (alarm.customVideo.length !== 0) {
+            createVideoWindow(alarm.customVideo, campaignId, content, campaignUrl, token);
+          } else {
+            const videos = stretchVideos.get(alarm.bodyPart);
+            const videoUrl = videos[Math.floor(Math.random() * videos.length)];
 
-      timerIds[alarm.time] = {
-        'notifyId': notifyId,
-        'popupId': popupId,
-        'status': 'active',
-      };
+            createVideoWindow(videoUrl, campaignId, content, campaignUrl, token);
+          }
+        }, diffMilliseconds);
+
+        timerIds[alarm.time] = {
+          'notifyId': notifyId,
+          'popupId': popupId,
+          'status': 'active',
+        };
+      }
     }
   };
 };
