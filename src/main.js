@@ -9,6 +9,7 @@ const VideoStore = require('./store/videos');
 const AlarmStore = require('./store/alarms');
 const bodyParts = require('./constants/index');
 const timerIds = {};
+let isFirst = true;
 
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -39,7 +40,7 @@ const createWindow = async () => {
   mainWindow.webContents.openDevTools();
 };
 
-const createVideoWindow = async (campaignId, content, videoUrl, campaignUrl) => {
+const createVideoWindow = async (campaignId, content, videoUrl, campaignUrl, token) => {
   const videoWindow = new BrowserWindow({
     fullscreen: true,
     webPreferences: {
@@ -48,15 +49,20 @@ const createVideoWindow = async (campaignId, content, videoUrl, campaignUrl) => 
     },
   });
 
-  await sendStats(campaignId, 'reach');
+  await sendStats(campaignId, 'reach', token);
   videoWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
+  videoWindow.webContents.openDevTools();
 
   videoWindow.webContents.on('did-finish-load', () => {
-    videoWindow.webContents.send('playVideo', campaignId, content, videoUrl);
+    videoWindow.webContents.send('playVideo', campaignId, content, videoUrl, campaignUrl);
   });
 
   ipcMain.on('closevideo', (event, arg) => {
     videoWindow.close();
+  });
+
+  ipcMain.on('clickBanner', async (event, arg) => {
+    await sendStats(campaignId, 'click', token);
   });
 }
 
@@ -105,12 +111,12 @@ async function prepareAlarm(token, alarm) {
 
       const popupId = setTimeout(() => {
         if (alarm.customVideo.length !== 0) {
-          createVideoWindow(campaignId, content, alarm.customVideo, campaignUrl);
+          createVideoWindow(campaignId, content, alarm.customVideo, campaignUrl, token);
         } else {
           const videos = stretchVideos.get(alarm.bodyPart);
           const videoUrl = videos[Math.floor(Math.random() * videos.length)];
 
-          createVideoWindow(campaignId, content, videoUrl, campaignUrl);
+          createVideoWindow(campaignId, content, videoUrl, campaignUrl, token);
         }
       }, diffMilliseconds);
 
@@ -140,7 +146,10 @@ app.on('activate', () => {
 });
 
 ipcMain.on('requestPrepareAlarms', (event, token) => {
-  prepareAlarm(token);
+  if (isFirst) {
+    prepareAlarm(token);
+    isFirst = false;
+  }
 });
 
 ipcMain.on('storeAlarm', (event, token, alarm) => {
