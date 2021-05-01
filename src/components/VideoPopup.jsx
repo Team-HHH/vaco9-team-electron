@@ -16,7 +16,7 @@ const PopupWrapper = styled.div`
 const VideoWrapper = styled.div`
   display: flex;
   width: 100%;
-  height: ${props => props.content ? 'calc(100vh - 100px)' : '100vh'};
+  height: ${props => props.content ? 'calc(100vh - 200px)' : '100vh'};
 
   div {
     width: 100%;
@@ -27,7 +27,7 @@ const VideoWrapper = styled.div`
 const BannerWrapper = styled.div`
   display: flex;
   width: 100%;
-  height: 100px;
+  height: 200px;
 `;
 
 const Banner = styled.img`
