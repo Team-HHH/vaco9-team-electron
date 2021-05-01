@@ -17,7 +17,7 @@ if (require('electron-squirrel-startup')) {
 
 const createWindow = async () => {
   const mainWindow = new BrowserWindow({
-    width: 800,
+    width: 720,
     height: 800,
     webPreferences: {
       nodeIntegration: true,
@@ -36,8 +36,6 @@ const createWindow = async () => {
       mainWindow.webContents.send('loginDataDoesNotExist', 'no');
     }
   });
-
-  mainWindow.webContents.openDevTools();
 };
 
 const createVideoWindow = async (videoUrl, campaignId, content, campaignUrl, token) => {
@@ -54,7 +52,6 @@ const createVideoWindow = async (videoUrl, campaignId, content, campaignUrl, tok
   }
 
   videoWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
-  videoWindow.webContents.openDevTools();
 
   videoWindow.webContents.on('did-finish-load', () => {
     videoWindow.webContents.send('playVideo', campaignId, content, videoUrl, campaignUrl);
@@ -104,7 +101,7 @@ async function prepareAlarm(token, alarm) {
       if (!response.data.data) {
         const notifyId = setTimeout(() => {
           const options = {
-            title: '스트레칭 3분 전입니다.',
+            title: '잠시후에 스트레칭 영상이 시작됩니다.',
             body: `이번엔 ${bodyParts[alarm.bodyPart]} 스트레칭 시간입니다.`,
           };
 
@@ -132,7 +129,7 @@ async function prepareAlarm(token, alarm) {
 
         const notifyId = setTimeout(() => {
           const options = {
-            title: '스트레칭 3분 전입니다.',
+            title: '잠시후에 스트레칭 영상이 시작됩니다.',
             body: `이번엔 ${bodyParts[alarm.bodyPart]} 스트레칭 시간입니다.`,
           };
 

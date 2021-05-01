@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const serverUrl = 'http://localhost:5000';
+const serverUrl = 'https://api.flexilis.xyz';
 
 exports.getVideos = async function () {
   try {
