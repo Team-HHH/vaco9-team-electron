@@ -1,12 +1,8 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import styled from 'styled-components';
-import LoginForm from '../components/LoginForm.jsx';
-import { fetchLogin } from '../reducers/login';
-
-const Container = styled.div`
-  height: 100vh;
-`;
+import LoginForm from '../../components/LoginForm/index.jsx';
+import { fetchLogin } from '../../reducers/login';
+import { Login as S } from './styles';
 
 export default function Login() {
   const isError = useSelector((state) => state.loginReducer.isError);
@@ -19,12 +15,12 @@ export default function Login() {
   }
 
   return (
-    <Container>
+    <S.Container>
       <LoginForm
         isError={isError}
         errorMessage={errorMessage}
         isFetching={isFetching}
         onLoginSubmit={handleLoginSubmit} />
-    </Container>
+    </S.Container>
   );
 }
