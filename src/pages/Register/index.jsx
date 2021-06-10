@@ -1,12 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import RegisterForm from '../components/RegisterForm.jsx';
-import { register } from '../apis/index.js';
-import { useState } from 'react';
-
-const Container = styled.div`
-  height: 100vh;
-`;
+import React, { useState } from 'react';
+import RegisterForm from '../../components/RegisterForm/index.jsx';
+import { register } from '../../apis/index.js';
+import { Register as S } from './styles';
 
 export default function Register() {
   const [isFetching, setIsFetching] = useState(false);
@@ -23,10 +18,10 @@ export default function Register() {
   }
 
   return (
-    <Container>
+    <S.Container>
       <RegisterForm
         isFetching={isFetching}
         onRegisterSubmit={handleRegisterSubmit} />
-    </Container>
+    </S.Container>
   );
 }

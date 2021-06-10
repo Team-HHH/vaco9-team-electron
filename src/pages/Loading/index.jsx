@@ -1,19 +1,9 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
 import { ipcRenderer } from 'electron';
 import { useDispatch } from 'react-redux';
-import { fetchLogin } from '../reducers/login';
-import Spinner from '../components/Spinner.jsx';
-import { color } from '../css/color';
-
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  width: 100vw;
-  background-color: ${color.MAIN};
-`;
+import { fetchLogin } from '../../reducers/login';
+import Spinner from '../../components/Spinner/index.jsx';
+import { Loading as S } from './styles';
 
 export default function Loading() {
   const dispatch = useDispatch();
@@ -34,12 +24,12 @@ export default function Loading() {
   });
 
   return (
-    <Container>
+    <S.Container>
       <Spinner
         color="white"
         loading={true}
         size={40}
       />
-    </Container>
+    </S.Container>
   );
 }

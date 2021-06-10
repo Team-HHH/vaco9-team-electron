@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import { ipcRenderer } from 'electron';
-import VideoPopUp from '../components/VideoPopup.jsx';
-import AlarmRegisterPage from '../pages/AlarmRegisterPage.jsx';
-import Login from '../pages/Login.jsx';
-import Register from '../pages/Register.jsx';
-import Loading from '../pages/Loading.jsx';
+import VideoPopUp from '../components/VideoPopup/index.jsx';
+import AlarmRegister from '../pages/AlarmRegister/index.jsx';
+import Login from '../pages/Login/index.jsx';
+import Register from '../pages/Register/index.jsx';
+import Loading from '../pages/Loading/index.jsx';
 
 if (!window.location.hash || window.location.hash === '#/') {
   window.location.hash = '#/loading';
@@ -40,7 +40,7 @@ export default function App() {
           <Register />
         </Route>
         <Route path="/alarmRegister">
-          <AlarmRegisterPage />
+          <AlarmRegister />
         </Route>
         <Route path="/popup">
           <VideoPopUp

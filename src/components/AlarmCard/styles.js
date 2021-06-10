@@ -1,9 +1,9 @@
-import React from 'react';
-import { formatTime } from '../util/index';
 import styled from 'styled-components';
-import { color } from '../css/color';
+import { color } from '../../css/color';
 
-const Card = styled.div`
+export const AlarmCard = {};
+
+AlarmCard.Card = styled.div`
   display: flex;
   justify-content: center;
   height: 60px;
@@ -14,7 +14,7 @@ const Card = styled.div`
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 `;
 
-const Time = styled.span`
+AlarmCard.Time = styled.span`
   text-align: center;
   width: 30%;
   margin: auto 0;
@@ -23,11 +23,11 @@ const Time = styled.span`
   color: ${color.MAIN_FONT};
 `;
 
-const DeleteButtonWrapper = styled.div`
+AlarmCard.DeleteButtonWrapper = styled.div`
   display: flex;
 `;
 
-const DeleteButton = styled.button`
+AlarmCard.DeleteButton = styled.button`
   align-self: right;
   height: 20px;
   border: none;
@@ -37,7 +37,7 @@ const DeleteButton = styled.button`
   }
 `;
 
-const ToggleWrapper = styled.label`
+AlarmCard.ToggleWrapper = styled.label`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -54,7 +54,7 @@ const ToggleWrapper = styled.label`
   }
 `;
 
-const Toggle = styled.input`
+AlarmCard.Toggle = styled.input`
   position: absolute;
   align-self: center;
   z-index: -1;
@@ -72,7 +72,7 @@ const Toggle = styled.input`
   }
 `;
 
-const ToggleButton = styled.i`
+AlarmCard.ToggleButton = styled.i`
   position: relative;
   display: block;
   outline: 0;
@@ -102,29 +102,3 @@ const ToggleButton = styled.i`
       display: none;
   }
 `;
-
-export default function AlarmCard({ time, onDeleteButtonClick, onToggleClick }) {
-  const { period, hhmm } = formatTime(time);
-
-  return (
-    <Card>
-      <Time>{period}</Time>
-      <Time>{hhmm}</Time>
-      <ToggleWrapper>
-        <Toggle
-          type="checkbox"
-          id={time}
-          defaultChecked={true}
-          onChange={onToggleClick}
-        />
-        <ToggleButton />
-      </ToggleWrapper>
-      <DeleteButtonWrapper>
-        <DeleteButton
-          id={time}
-          onClick={onDeleteButtonClick}
-        >x</DeleteButton>
-      </DeleteButtonWrapper>
-    </Card>
-  );
-}

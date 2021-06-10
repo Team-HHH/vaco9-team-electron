@@ -1,8 +1,9 @@
-import React from 'react';
 import styled from 'styled-components';
-import { color } from '../css/color';
+import { color } from '../../css/color';
 
-const StyledSpinner = styled.svg`
+export const Spinner = {};
+
+Spinner.StyledSpinner = styled.svg`
   animation: rotate 1s linear infinite;
   margin: 40px;
   width: 50px;
@@ -34,20 +35,3 @@ const StyledSpinner = styled.svg`
     }
   }
 `;
-
-export default function Spinner() {
-  return (
-    <>
-      <StyledSpinner viewBox="0 0 50 50">
-        <circle
-          className="path"
-          cx="25"
-          cy="25"
-          r="20"
-          fill="none"
-          strokeWidth="6"
-        />
-      </StyledSpinner>
-    </>
-  );
-}

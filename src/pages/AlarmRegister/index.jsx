@@ -1,30 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { ipcRenderer } from 'electron';
-import AlarmNavbar from '../components/AlarmNavbar.jsx';
-import AlarmRegister from '../components/AlarmRegister.jsx';
-import styled from 'styled-components';
-import { color } from '../css/color';
 import { useSelector } from 'react-redux';
+import { ipcRenderer } from 'electron';
 
-const Container = styled.div`
-  display: flex;
-  height: 100vh;
-`;
+import AlarmNavbar from '../../components/AlarmNavbar/index.jsx';
+import AlarmRegisterForm from '../../components/AlarmRegisterForm/index.jsx';
+import { AlarmRegister as S } from './styles';
 
-const LeftSection = styled.div`
-  width: 30vw;
-  min-width: 120px;
-  background-color: ${color.MAIN};
-`;
-
-const RightSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 70vw;
-  background-color: ${color.BACK};
-`;
-
-export default function AlarmRegisterPage() {
+export default function AlarmRegister() {
   const [alarms, setAlarms] = useState([]);
   const token = useSelector((state) => state.loginReducer.accessToken);
 
@@ -60,17 +42,17 @@ export default function AlarmRegisterPage() {
   }
 
   return (
-    <Container>
-      <LeftSection>
+    <S.Container>
+      <S.LeftSection>
         <AlarmNavbar
           alarms={alarms}
           onToggleClick={handleToggleClick}
           onDeleteButtonClick={handleDeleteButtonClick}
         />
-      </LeftSection>
-      <RightSection>
-        <AlarmRegister onRegisterAlarmSubmit={handleRegisterAlarmSubmit} />
-      </RightSection>
-    </Container>
+      </S.LeftSection>
+      <S.RightSection>
+        <AlarmRegisterForm onRegisterAlarmSubmit={handleRegisterAlarmSubmit} />
+      </S.RightSection>
+    </S.Container>
   );
 }
